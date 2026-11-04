@@ -1,0 +1,33 @@
+---
+import { site } from '../data/site'
+import Container from './container.astro'
+
+const { about } = site
+---
+
+<section id="about" class="py-28">
+  <Container>
+    <div class="grid gap-y-10 lg:grid-cols-12 lg:gap-x-6">
+      <h2 class="text-xs font-medium uppercase tracking-[0.08em] text-ink-faint lg:col-span-3">
+        {about.label}
+      </h2>
+      <div class="lg:col-span-9">
+        <p class="max-w-225 text-lead font-normal">
+          <span>{about.leadBase}</span>
+          <span class="text-accent">{about.leadAccent}</span>
+        </p>
+        <p class="mt-10 max-w-130 text-[15px] leading-relaxed">{about.text}</p>
+        <dl class="mt-14 flex flex-wrap gap-x-16 gap-y-8 border-t border-line pt-7">
+          {
+            about.metrics.map((metric) => (
+              <div class="flex flex-col-reverse gap-2">
+                <dd class="text-[13px] text-ink-muted">{metric.caption}</dd>
+                <dt class="text-metric tracking-[-0.03em]">{metric.value}</dt>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </Container>
+</section>

@@ -1,0 +1,99 @@
+import type { Project } from '../types'
+
+export const projects: Project[] = [
+  {
+    slug: 'eda-clone',
+    title: 'Eda Clone',
+    description:
+      'Админ-панель и API-слой для сервиса доставки еды: ролевой доступ, дашборды с аналитикой, модификаторы товаров, загрузка изображений.',
+    stack: ['Next.js', 'Supabase', 'TypeScript', 'TanStack Table', 'Recharts'],
+    year: '2026',
+    note: 'Соло · full-stack',
+    hue: '#8a5a4a',
+    group: 'commercial',
+    layout: 'wide',
+    intro: {
+      title: 'Eda Clone',
+      lead: 'Админ-панель и API для доставки еды',
+      text: 'Роли, дашборды на SQL RPC, модификаторы товаров.',
+    },
+  },
+  {
+    slug: 'sitim-web',
+    title: 'Sitim Web',
+    description:
+      'Frontend с входом по телефону: OTP, hCaptcha, сессии на Redux Toolkit и UI-компоненты на Tailwind v4.',
+    stack: ['Next.js', 'TypeScript', 'Redux Toolkit', 'Tailwind v4', 'hCaptcha'],
+    year: '2026',
+    note: 'Команда · frontend',
+    hue: '#5d6190',
+    group: 'commercial',
+    layout: 'half',
+  },
+  {
+    slug: 'delivery-crm',
+    title: 'Delivery CRM',
+    description:
+      'Frontend CRM-системы доставки на React и Inertia: корзина, чекаут и конфигуратор товаров с мобильной адаптацией.',
+    stack: ['React', 'TypeScript', 'Inertia.js', 'Laravel', 'Tailwind'],
+    year: '2026',
+    note: 'Команда · frontend',
+    hue: '#85703c',
+    group: 'commercial',
+    layout: 'half',
+  },
+  {
+    slug: 'stream-queue',
+    title: 'StreamQueue',
+    description:
+      'Self-hosted очередь заказов песен с YouTube для Twitch: заказ за баллы канала, фильтры, чёрный список и оверлей для OBS с панелью управления в браузере.',
+    stack: ['Node.js', 'TypeScript', 'Express', 'SSE', 'Twitch API'],
+    year: '2026',
+    hue: '#6e5b9a',
+    group: 'personal',
+    layout: 'wide',
+    href: 'https://github.com/choompuy/stream-queue',
+    intro: {
+      title: 'StreamQueue',
+      lead: 'Очередь песен для Twitch-стримов',
+      text: 'Заказ треков за баллы канала и оверлей для OBS.',
+    },
+  },
+  {
+    slug: 'weather-dashboard',
+    title: 'Weather Dashboard',
+    description:
+      'Погодный и экологический дашборд с расчётом AQI по EPA-логике и интерактивными графиками прогноза.',
+    stack: ['Vue 3', 'TypeScript', 'Chart.js', 'PrimeVue'],
+    year: '2025',
+    hue: '#4a7d9a',
+    group: 'personal',
+    layout: 'third',
+    href: 'https://github.com/choompuy/vue-weather',
+  },
+  {
+    slug: 'projectpaper',
+    title: 'ProjectPaper',
+    description:
+      'SaaS для управления проектами с real-time синхронизацией, системой ролей RBAC и двумя видами задач - Board/Table.',
+    stack: ['Next.js', 'TypeScript', 'Firebase', 'Redux'],
+    year: '2024',
+    hue: '#66727f',
+    group: 'personal',
+    layout: 'third',
+    href: 'https://github.com/choompuy/nextjs-projectpaper',
+  },
+  {
+    slug: 'attractions-guide',
+    title: 'Attractions Guide',
+    description:
+      'Мобильный гид по достопримечательностям: каталог с фильтрами, карта с кастомными маркерами, маршруты через Google Directions.',
+    stack: ['React Native', 'Expo', 'Firebase', 'Google Maps'],
+    year: '2025',
+    note: 'Дипломная работа',
+    hue: '#6f7d44',
+    group: 'personal',
+    layout: 'third',
+    href: 'https://github.com/choompuy/reactnative-attractionsguide',
+  },
+]

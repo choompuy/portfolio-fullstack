@@ -1,0 +1,75 @@
+---
+import { nav, site } from '../data/site'
+import Button from './button.astro'
+import NavPill from './nav-pill.astro'
+import Chip from './chip.astro'
+import Glow from './glow.astro'
+import ArrowIcon from './arrow-icon.astro'
+---
+
+<div class="px-6 pt-6" id="top">
+  <section
+    class="relative isolate overflow-hidden rounded-block bg-page"
+    style="--hue: var(--color-accent)"
+  >
+    <Glow size="lg" drift />
+    <div class="relative z-10 flex min-h-152 flex-col px-8 py-8">
+      <!-- Header -->
+      <header class="relative flex items-center justify-between gap-4">
+        <a href="#top" class="flex items-center gap-3">
+          <span
+            class="grid size-8 place-items-center rounded-lg bg-ink text-base font-medium text-page"
+          >
+            {site.initial}
+          </span>
+          <span class="text-base font-medium">{site.name}</span>
+        </a>
+        <nav
+          aria-label="Основная навигация"
+          class="absolute left-1/2 hidden -translate-x-1/2 gap-2 md:flex"
+        >
+          {nav.map((item) => <NavPill href={item.href}>{item.label}</NavPill>)}
+        </nav>
+        <Button href="#contacts" variant="primary">Связаться</Button>
+      </header>
+
+      <!-- Hero content -->
+      <div class="mt-20 animate-rise lg:mt-24">
+        <p
+          class="inline-flex items-center gap-2 rounded-full border border-line bg-soft py-1.75 pl-3 pr-3.5 text-[13px]"
+        >
+          <span aria-hidden="true" class="size-1.75 rounded-full bg-status"></span>
+          {site.status}
+        </p>
+        <h1 class="mt-5 text-display font-normal tracking-[-0.03em]">{site.role}</h1>
+        <div class="mt-10 max-w-140 lg:ml-[28%]">
+          <p class="text-lg leading-snug">{site.tagline}</p>
+          <div class="mt-10">
+            <Button href="#projects">Смотреть проекты</Button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tech card -->
+      <aside
+        class="mt-10 rounded-[1.25rem] bg-card p-5 lg:absolute lg:bottom-8 lg:right-8 lg:mt-0 lg:w-71"
+      >
+        <div
+          class="flex items-center justify-between text-xs font-medium uppercase tracking-[0.08em]"
+        >
+          <h2>{site.techCard.title}</h2>
+          <ArrowIcon />
+        </div>
+        <ul class="mt-5 flex flex-wrap gap-1.5">
+          {
+            site.techCard.chips.map((chip) => (
+              <Chip variant="default" size="sm">
+                {chip}
+              </Chip>
+            ))
+          }
+        </ul>
+      </aside>
+    </div>
+  </section>
+</div>

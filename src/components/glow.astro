@@ -1,0 +1,10 @@
+---
+interface Props {
+  size?: 'default' | 'lg'
+  drift?: boolean
+}
+
+const { size = 'default', drift = false } = Astro.props
+---
+
+<div class:list={['glow', size === 'lg' && 'glow--lg', drift && 'glow--drift']}></div>

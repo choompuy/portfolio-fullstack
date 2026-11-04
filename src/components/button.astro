@@ -1,0 +1,97 @@
+---
+type Variant = 'primary' | 'ghost'
+type Element = 'button' | 'a'
+
+interface Props {
+  as?: Element
+  variant?: Variant
+  href?: string
+  external?: boolean
+  class?: string
+  arrow?: boolean
+}
+
+const {
+  as: Button = 'a',
+  variant = 'ghost',
+  href = '#',
+  external = false,
+  class: className,
+  arrow = true,
+  ...props
+}: Props = Astro.props
+---
+
+<Button
+  class:list={['btn', `btn--${variant}`, className]}
+  href={Button === 'a' ? href : undefined}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noreferrer' : undefined}
+  {...props}
+>
+  <slot />
+  {
+    arrow && (
+      <svg
+        class="btn-arrow"
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4 12L12 4M12 4H6M12 4V10"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    )
+  }
+</Button>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    height: 2.75rem;
+    padding-inline: 1.5rem;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .btn--primary {
+    background: var(--color-ink);
+    color: var(--color-page);
+  }
+
+  .btn--primary:hover {
+    background: rgb(244 247 247 / 0.85);
+  }
+
+  .btn--ghost {
+    border: 0.0625rem solid var(--color-line-strong);
+    background: var(--color-soft);
+    backdrop-filter: blur(0.5rem);
+  }
+
+  .btn--ghost:hover {
+    background: rgb(244 247 247 / 0.1);
+  }
+
+  .btn-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .btn:hover .btn-arrow {
+    transform: translate(0.125rem, -0.125rem);
+  }
+</style>

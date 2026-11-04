@@ -1,0 +1,47 @@
+---
+import type { Project } from '../types'
+import SectionLabel from './section-label.astro'
+import ProjectCard from './project-card.astro'
+
+interface Props {
+  label: string
+  items: Project[]
+}
+
+const { label, items } = Astro.props
+
+const rowClass: Record<string, string> = {
+  wide: 'grid gap-6',
+  half: 'grid gap-6 md:grid-cols-2',
+  third: 'grid gap-6 md:grid-cols-2 lg:grid-cols-3',
+}
+
+// Подряд идущие карточки с одним layout собираются в один ряд
+function toRows(items: Project[]) {
+  const rows: { layout: string; items: Project[] }[] = []
+  for (const item of items) {
+    const last = rows[rows.length - 1]
+    if (last && last.layout === item.layout && item.layout !== 'wide') {
+      last.items.push(item)
+    } else {
+      rows.push({ layout: item.layout, items: [item] })
+    }
+  }
+  return rows
+}
+
+const rows = toRows(items)
+---
+
+<div class="flex flex-col gap-14">
+  <SectionLabel label={label} count={String(items.length).padStart(2, '0')} />
+  {
+    rows.map((row, index) => (
+      <div class={rowClass[row.layout]}>
+        {row.items.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    ))
+  }
+</div>

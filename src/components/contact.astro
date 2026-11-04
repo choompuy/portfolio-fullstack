@@ -1,0 +1,48 @@
+---
+import { site } from '../data/site'
+import Button from './button.astro'
+import Glow from './glow.astro'
+import ArrowIcon from './arrow-icon.astro'
+
+const { contacts } = site
+---
+
+<div id="contacts" class="px-6 pb-6">
+  <section
+    class="relative isolate overflow-hidden rounded-block bg-page"
+    style="--hue: var(--color-accent)"
+  >
+    <Glow size="lg" />
+    <div class="relative z-10 flex min-h-[17.3rem] flex-col justify-between gap-16 px-8 py-8">
+      <h2 class="text-xs font-medium uppercase tracking-[0.08em] text-ink-muted">
+        {contacts.label}
+      </h2>
+      <div class="flex flex-wrap items-center justify-between gap-6">
+        <a
+          href={`mailto:${contacts.email}`}
+          class="inline-flex items-center gap-3 text-[clamp(1.125rem,5vw,2.5rem)] tracking-[-0.02em]"
+        >
+          {contacts.email}
+          <ArrowIcon size={28} />
+        </a>
+        <div class="flex gap-2">
+          {
+            contacts.links.map((link) => (
+              <Button href={link.href} external>
+                {link.label}
+              </Button>
+            ))
+          }
+        </div>
+      </div>
+      <div
+        class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-line pt-4 text-xs text-ink-muted"
+      >
+        <span>
+          {site.name} / {site.role}
+        </span>
+        <a href="#top" class="transition-colors hover:text-ink"> Наверх ↑ </a>
+      </div>
+    </div>
+  </section>
+</div>

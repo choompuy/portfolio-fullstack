@@ -1,0 +1,14 @@
+---
+interface Props {
+  label: string
+  count: string
+  class?: string
+}
+
+const { label, count, class: className } = Astro.props
+---
+
+<div class:list={['flex items-center justify-between pb-4 border-b border-line', className]}>
+  <span class="text-xs font-medium uppercase tracking-[0.08em] text-ink-faint">{label}</span>
+  <span class="text-sm text-ink-faint">{count}</span>
+</div>

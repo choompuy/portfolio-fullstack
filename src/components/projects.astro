@@ -1,0 +1,16 @@
+---
+import { projects } from '../data/projects'
+import Container from './container.astro'
+import ProjectGroup from './project-group.astro'
+
+const commercial = projects.filter((project) => project.group === 'commercial')
+const personal = projects.filter((project) => project.group === 'personal')
+---
+
+<section id="projects" class="py-14">
+  <Container class="flex flex-col gap-20">
+    <h2 class="text-title font-normal tracking-[-0.02em]">Проекты</h2>
+    <ProjectGroup label="Коммерческие проекты" items={commercial} />
+    <ProjectGroup label="Личные проекты" items={personal} />
+  </Container>
+</section>

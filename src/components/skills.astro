@@ -1,0 +1,33 @@
+---
+import { site } from '../data/site'
+import { skills } from '../data/skills'
+import Container from './container.astro'
+import ArrowIcon from './arrow-icon.astro'
+---
+
+<section id="skills" class="py-28">
+  <Container>
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-x-6">
+      <div class="lg:col-span-4">
+        <h2 class="text-[clamp(2rem,3.6vw,3.25rem)] font-normal leading-[1.08] tracking-[-0.02em]">
+          {site.skills.titleLines.map((line) => <span class="block">{line}</span>)}
+        </h2>
+        <p class="mt-6 max-w-65 text-sm leading-snug text-ink-muted">{site.skills.text}</p>
+      </div>
+      <ul class="border-t border-line lg:col-span-8">
+        {
+          skills.map((group, index) => (
+            <li class="grid grid-cols-[2.5rem_1fr_auto] items-start gap-x-4 border-b border-line py-6">
+              <span class="pt-2 text-xs text-ink-muted">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="text-case font-normal">{group.name}</h3>
+                <p class="mt-4 text-sm text-ink-muted">{group.items.join(', ')}</p>
+              </div>
+              <ArrowIcon class="mt-2 text-ink-muted" />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Container>
+</section>
