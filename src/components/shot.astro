@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets'
+
+interface Props {
+  src?: string
+  alt: string
+  sizes: string
+}
+
+const { src, alt, sizes } = Astro.props
+const remote = src?.startsWith('http')
+const cls = 'absolute inset-0 size-full object-cover object-top'
+---
+
+{
+  !src ? (
+    <div class="grid h-full place-items-center text-xs text-ink-faint">Скриншот проекта</div>
+  ) : remote ? (
+    <Image
+      src={src}
+      alt={alt}
+      inferSize
+      widths={[640, 1280]}
+      sizes={sizes}
+      loading="lazy"
+      decoding="async"
+      class={cls}
+    />
+  ) : (
+    <img src={src} alt={alt} loading="lazy" decoding="async" class={cls} />
+  )
+}

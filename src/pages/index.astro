@@ -34,9 +34,11 @@ import Contact from '../components/contact.astro'
       <Contact />
     </main>
     <script>
+      import { initGradients } from '../scripts/gradient'
       import { reveal } from '../scripts/reveal'
       import { revealWords } from '../scripts/reveal-words'
 
+      initGradients()
       reveal()
       revealWords('[data-reveal-words]')
     </script>

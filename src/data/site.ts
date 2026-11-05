@@ -1,11 +1,23 @@
 import type { NavItem } from '../types'
+import { projects } from './projects'
+
+const plural = (n: number, [one, few, many]: [string, string, string]) => {
+  const m10 = n % 10
+  const m100 = n % 100
+  if (m10 === 1 && m100 !== 11) return one
+  if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few
+  return many
+}
+
+const commercial = projects.filter((p) => p.group === 'commercial').length
+const personal = projects.filter((p) => p.group === 'personal').length
 
 export const site = {
   name: 'Васильев Айхал',
   initial: 'А',
   role: 'Frontend Developer',
   tagline:
-    'Создаю сложные, современные и удобные интерфейсы - с вниманием к архитектуре, производительности и пользовательскому опыту',
+    'Делаю интерфейсы на React и Next.js: админки, дашборды, корзины и формы для сервисов доставки',
   status: 'Открыт к предложениям',
   techCard: {
     title: 'Технологии',
@@ -13,18 +25,33 @@ export const site = {
   },
   about: {
     label: 'Обо мне',
-    leadBase: 'Меня зовут Васильев Айхал - Frontend Developer',
-    leadAccent: ', специализирующийся на создании сложных, современных и удобных интерфейсов',
-    text: 'Занимаюсь разработкой адаптивных и интерактивных интерфейсов с использованием современных технологий, уделяя особое внимание архитектуре, качеству кода и производительности',
+    leadBase: 'Привет, я Айхал.',
+    leadAccent: ' Делаю фронтенд на React, Next.js и Vue и сам подключаю его к API.',
+    text: 'С 2026 года делаю frontend и API-слой для сервисов доставки по договору. Параллельно собираю личные проекты: от погодного дашборда до очереди песен для Twitch.',
+    facts: [
+      { label: 'Образование', value: 'Магистр прикладной математики и информатики, ДВФУ, 2025' },
+      { label: 'Формат работы', value: 'Удалённо, гибрид, офис' },
+      { label: 'Языки', value: 'Русский, английский B1' },
+    ],
     metrics: [
-      { value: '3', caption: 'коммерческих проекта' },
-      { value: '4', caption: 'личных проекта' },
+      {
+        value: String(commercial),
+        caption: plural(commercial, [
+          'коммерческий проект',
+          'коммерческих проекта',
+          'коммерческих проектов',
+        ]),
+      },
+      {
+        value: String(personal),
+        caption: plural(personal, ['личный проект', 'личных проекта', 'личных проектов']),
+      },
       { value: 'React 19', caption: 'и Next.js 16 в рабочем стеке' },
     ],
   },
   skills: {
     titleLines: ['Стек', 'и инструменты'],
-    text: 'Полный цикл разработки фронтенда - от архитектуры до деплоя',
+    text: 'Всё из этого есть в проектах выше',
   },
   contacts: {
     label: 'Контакты',

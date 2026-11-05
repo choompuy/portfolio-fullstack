@@ -3,7 +3,6 @@ import { site } from '../data/site'
 import { skills } from '../data/skills'
 import Container from './container.astro'
 import ChipList from './chip-list.astro'
-import ArrowIcon from './arrow-icon.astro'
 ---
 
 <section id="skills" class="py-28">
@@ -20,17 +19,10 @@ import ArrowIcon from './arrow-icon.astro'
       </div>
       <ul class="border-t border-line lg:col-span-8" data-reveal-group>
         {
-          skills.map((group, index) => (
-            <li
-              class="grid grid-cols-[2.5rem_1fr_auto] items-start gap-x-4 border-b border-line py-6"
-              data-reveal
-            >
-              <span class="pt-2 text-xs text-ink-muted">{String(index + 1).padStart(2, '0')}</span>
-              <div>
-                <h3 class="text-case font-normal">{group.name}</h3>
-                <ChipList items={group.items} size="md" flat class="mt-4" />
-              </div>
-              <ArrowIcon class="mt-2 text-ink-muted" />
+          skills.map((group) => (
+            <li class="border-b border-line py-6" data-reveal>
+              <h3 class="text-case font-normal">{group.name}</h3>
+              <ChipList items={group.items} size="md" flat class="mt-4" />
             </li>
           ))
         }

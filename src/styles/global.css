@@ -143,7 +143,6 @@
   background: linear-gradient(180deg, rgb(244 247 247 / 0.08), rgb(244 247 247 / 0.02));
   border: 0.0625rem solid var(--color-line-strong);
   border-radius: var(--radius-glass);
-  backdrop-filter: blur(1.25rem);
   box-shadow: 0 1rem 2.25rem rgb(0 0 0 / 0.4);
 }
 
@@ -249,7 +248,7 @@ html.anim [data-split]:not(.is-split) {
 }
 html.anim .lt {
   opacity: 0;
-  animation: in-letter 1.1s var(--ease-out) calc(0.7s + var(--i) * 40ms) both;
+  animation: in-letter 1.1s var(--ease-out) calc(0.7s + var(--i) * 55ms) both;
 }
 
 /* Пульс у статуса «Открыт к предложениям» */
@@ -274,17 +273,14 @@ html.anim [data-reveal-words]:not(.is-ready) {
 .st-word {
   display: inline-block;
   opacity: 0;
-  filter: blur(0.25rem);
-  transform: translateY(0.4em);
+  filter: blur(0.5rem);
 }
 .is-in .st-word {
   opacity: 1;
   filter: none;
-  transform: none;
   transition:
-    opacity 0.8s var(--ease-out) calc(var(--i) * 35ms),
-    filter 0.8s var(--ease-out) calc(var(--i) * 35ms),
-    transform 0.8s var(--ease-out) calc(var(--i) * 35ms);
+    opacity 0.9s var(--ease-out) calc(var(--i) * 35ms),
+    filter 0.9s var(--ease-out) calc(var(--i) * 35ms);
 }
 
 /* Наклон карточки проекта, светящийся контур и сдвиг скриншота на другой глубине.
@@ -331,8 +327,8 @@ html.anim [data-reveal-words]:not(.is-ready) {
    data-reveal - текст (с лёгким размытием), data-reveal="block" - большие блоки без размытия. */
 html.anim [data-reveal] {
   opacity: 0;
-  filter: blur(0.25rem);
-  transform: translateY(1rem);
+  filter: blur(0.5rem);
+  transform: translateY(0.625rem);
 }
 html.anim [data-reveal='block'] {
   filter: none;
@@ -346,4 +342,28 @@ html.anim [data-reveal].is-in {
     opacity 0.9s var(--ease-out) var(--d, 0s),
     filter 0.9s var(--ease-out) var(--d, 0s),
     transform 0.9s var(--ease-out) var(--d, 0s);
+}
+
+/* ---------- WebGL-градиент ----------
+   Канвас рисует scripts/gradient.ts. CSS-свечение (.glow::before/::after) остаётся запасным:
+   оно видно только если WebGL недоступен или скрипт не запустился. */
+.glow__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--grain) 0 0 / 8rem;
+  opacity: 0.08;
+}
+.glow.is-gl::before,
+.glow.is-gl::after,
+html.anim .glow:not(.glow--fallback)::before,
+html.anim .glow:not(.glow--fallback)::after {
+  display: none;
 }

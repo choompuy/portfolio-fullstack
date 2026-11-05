@@ -6,6 +6,9 @@ export function splitTitle(selector: string) {
     title.setAttribute('aria-label', text)
     title.textContent = ''
 
+    // Буквы разгораются от центра заголовка к краям
+    const total = [...text].filter((char) => char !== ' ').length
+    const middle = (total - 1) / 2
     let index = 0
     text.split(' ').forEach((word, wordIndex) => {
       if (wordIndex > 0) title.append(' ')
@@ -17,7 +20,7 @@ export function splitTitle(selector: string) {
       for (const char of word) {
         const letter = document.createElement('span')
         letter.className = 'lt'
-        letter.style.setProperty('--i', String(index++))
+        letter.style.setProperty('--i', String(Math.abs(index++ - middle)))
         letter.textContent = char
         wordEl.append(letter)
       }

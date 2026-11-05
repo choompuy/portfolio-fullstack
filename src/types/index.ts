@@ -14,10 +14,10 @@ export interface Project {
   group: 'commercial' | 'personal'
   layout: 'wide' | 'half' | 'third'
   href?: string
+  image?: string
   intro?: {
     title: string
     lead: string
-    text: string
   }
 }
 

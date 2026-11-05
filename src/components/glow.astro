@@ -2,9 +2,17 @@
 interface Props {
   size?: 'default' | 'lg'
   drift?: boolean
+  /** Как градиент появляется: растворение по шуму или разгорание из центра */
+  reveal?: 'dissolve' | 'ignite'
 }
 
-const { size = 'default', drift = false } = Astro.props
+const { size = 'default', drift = false, reveal = 'dissolve' } = Astro.props
 ---
 
-<div class:list={['glow', size === 'lg' && 'glow--lg', drift && 'glow--drift']}></div>
+<div
+  class:list={['glow', size === 'lg' && 'glow--lg', drift && 'glow--drift']}
+  data-gradient={reveal}
+  data-gradient-mode={size === 'lg' ? 0.4 : 0}
+>
+  <i class="grain"></i>
+</div>

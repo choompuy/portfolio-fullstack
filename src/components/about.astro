@@ -20,7 +20,20 @@ const { about } = site
           <span class="text-accent">{about.leadAccent}</span>
         </p>
         <p class="mt-10 max-w-130 text-[15px] leading-relaxed" data-reveal>{about.text}</p>
-        <dl class="mt-14 flex flex-wrap gap-x-16 gap-y-8 border-t border-line pt-7" data-reveal-group>
+        <dl class="mt-14 border-t border-line" data-reveal-group>
+          {
+            about.facts.map((fact) => (
+              <div
+                class="grid gap-1 border-b border-line py-4 sm:grid-cols-[11rem_1fr] sm:gap-6"
+                data-reveal
+              >
+                <dt class="text-[13px] text-ink-muted">{fact.label}</dt>
+                <dd class="text-[15px]">{fact.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <dl class="mt-10 flex flex-wrap gap-x-16 gap-y-8" data-reveal-group>
           {
             about.metrics.map((metric) => (
               <div class="flex flex-col-reverse gap-2" data-reveal>

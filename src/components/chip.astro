@@ -52,7 +52,6 @@ const {
     white-space: nowrap;
     text-decoration: none;
     cursor: default;
-    backdrop-filter: blur(0.5rem);
   }
 
   .chip--sm {
@@ -81,7 +80,6 @@ const {
     border: 1px solid var(--color-line-strong);
     background: var(--color-soft);
     color: var(--color-ink);
-    backdrop-filter: blur(0.5rem);
   }
   .chip--primary {
     background: var(--color-ink);
@@ -93,11 +91,6 @@ const {
     background: var(--color-soft);
     color: var(--color-status);
     font-weight: 500;
-  }
-
-  /* Чипы на плоском фоне: blur не нужен, а на десятках чипов он заметно нагружает рендер */
-  .chip--flat {
-    backdrop-filter: none;
   }
 
   button.chip,

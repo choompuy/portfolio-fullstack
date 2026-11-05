@@ -1,5 +1,8 @@
 import type { Project } from '../types'
 
+const shot = (repo: string, branch: string, file: string) =>
+  `https://raw.githubusercontent.com/choompuy/${repo}/${branch}/docs/screenshots/${file}`
+
 export const projects: Project[] = [
   {
     slug: 'eda-clone',
@@ -15,7 +18,6 @@ export const projects: Project[] = [
     intro: {
       title: 'Eda Clone',
       lead: 'Админ-панель и API для доставки еды',
-      text: 'Роли, дашборды на SQL RPC, модификаторы товаров.',
     },
   },
   {
@@ -56,7 +58,6 @@ export const projects: Project[] = [
     intro: {
       title: 'StreamQueue',
       lead: 'Очередь песен для Twitch-стримов',
-      text: 'Заказ треков за баллы канала и оверлей для OBS.',
     },
   },
   {
@@ -70,6 +71,7 @@ export const projects: Project[] = [
     group: 'personal',
     layout: 'third',
     href: 'https://github.com/choompuy/vue-weather',
+    image: shot('vue-weather', 'main', 'dark.png'),
   },
   {
     slug: 'projectpaper',
@@ -82,6 +84,7 @@ export const projects: Project[] = [
     group: 'personal',
     layout: 'third',
     href: 'https://github.com/choompuy/nextjs-projectpaper',
+    image: shot('nextjs-projectpaper', 'master', 'tasks-board.png'),
   },
   {
     slug: 'attractions-guide',
@@ -95,5 +98,6 @@ export const projects: Project[] = [
     group: 'personal',
     layout: 'third',
     href: 'https://github.com/choompuy/reactnative-attractionsguide',
+    image: shot('reactnative-attractionsguide', 'master', 'hero.png'),
   },
 ]

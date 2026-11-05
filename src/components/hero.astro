@@ -4,7 +4,6 @@ import Button from './button.astro'
 import NavPill from './nav-pill.astro'
 import ChipList from './chip-list.astro'
 import Glow from './glow.astro'
-import ArrowIcon from './arrow-icon.astro'
 ---
 
 <div class="px-6 pt-6" id="top">
@@ -62,12 +61,7 @@ import ArrowIcon from './arrow-icon.astro'
         data-in="fade"
         data-step="6"
       >
-        <div
-          class="flex items-center justify-between text-xs font-medium uppercase tracking-[0.08em]"
-        >
-          <h2>{site.techCard.title}</h2>
-          <ArrowIcon />
-        </div>
+        <h2 class="text-xs font-medium uppercase tracking-[0.08em]">{site.techCard.title}</h2>
         <ChipList items={site.techCard.chips} class="mt-5" />
       </aside>
     </div>
