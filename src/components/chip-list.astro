@@ -1,0 +1,25 @@
+---
+import Chip from './chip.astro'
+
+interface Props {
+  items: string[]
+  size?: 'sm' | 'md'
+  /** Без размытия фона: для чипов на плоском фоне, где оно ничего не даёт */
+  flat?: boolean
+  class?: string
+}
+
+const { items, size = 'sm', flat = false, class: className } = Astro.props
+---
+
+<ul class:list={['flex flex-wrap gap-1.5', className]}>
+  {
+    items.map((item) => (
+      <li>
+        <Chip size={size} flat={flat}>
+          {item}
+        </Chip>
+      </li>
+    ))
+  }
+</ul>

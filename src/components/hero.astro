@@ -2,7 +2,7 @@
 import { nav, site } from '../data/site'
 import Button from './button.astro'
 import NavPill from './nav-pill.astro'
-import Chip from './chip.astro'
+import ChipList from './chip-list.astro'
 import Glow from './glow.astro'
 import ArrowIcon from './arrow-icon.astro'
 ---
@@ -68,15 +68,7 @@ import ArrowIcon from './arrow-icon.astro'
           <h2>{site.techCard.title}</h2>
           <ArrowIcon />
         </div>
-        <ul class="mt-5 flex flex-wrap gap-1.5">
-          {
-            site.techCard.chips.map((chip) => (
-              <Chip variant="default" size="sm">
-                {chip}
-              </Chip>
-            ))
-          }
-        </ul>
+        <ChipList items={site.techCard.chips} class="mt-5" />
       </aside>
     </div>
   </section>

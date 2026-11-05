@@ -1,7 +1,7 @@
 ---
 import type { Project } from '../types'
 import Glow from './glow.astro'
-import Chip from './chip.astro'
+import ChipList from './chip-list.astro'
 import GlassFrame from './glass-frame.astro'
 import ArrowButton from './arrow-button.astro'
 
@@ -24,13 +24,7 @@ const wide = project.layout === 'wide'
       wide ? (
         <>
           <div class="absolute left-6 top-6 z-10 max-w-[calc(100%-3rem)]">
-            <ul class="flex flex-wrap gap-1.5">
-              {project.stack.map((item) => (
-                <Chip variant="default" size="sm">
-                  {item}
-                </Chip>
-              ))}
-            </ul>
+            <ChipList items={project.stack} />
           </div>
           {project.intro && (
             <div class="absolute left-6 top-[58%] z-10 w-[calc(100%-3rem)] max-w-105 -translate-y-1/2 md:left-12 md:top-1/2">
@@ -55,13 +49,7 @@ const wide = project.layout === 'wide'
         </>
       ) : (
         <div class="relative z-10 flex h-full flex-col gap-5 p-6">
-          <ul class="flex flex-wrap gap-1.5">
-            {project.stack.map((item) => (
-              <Chip variant="default" size="sm">
-                {item}
-              </Chip>
-            ))}
-          </ul>
+          <ChipList items={project.stack} />
           <GlassFrame class="relative min-h-0 flex-1">
             <div class="grid h-full place-items-center text-xs text-ink-faint">
               Скриншот проекта
