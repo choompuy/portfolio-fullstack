@@ -14,18 +14,19 @@ const { contacts } = site
   >
     <Glow size="lg" />
     <div class="relative z-10 flex min-h-[17.3rem] flex-col justify-between gap-16 px-8 py-8">
-      <h2 class="text-xs font-medium uppercase tracking-[0.08em] text-ink-muted">
+      <h2 class="text-xs font-medium uppercase tracking-[0.08em] text-ink-muted" data-reveal>
         {contacts.label}
       </h2>
       <div class="flex flex-wrap items-center justify-between gap-6">
         <a
           href={`mailto:${contacts.email}`}
           class="inline-flex items-center gap-3 text-[clamp(1.125rem,5vw,2.5rem)] tracking-[-0.02em]"
+          data-reveal
         >
           {contacts.email}
           <ArrowIcon size={28} />
         </a>
-        <div class="flex gap-2">
+        <div class="flex gap-2" data-reveal>
           {
             contacts.links.map((link) => (
               <Button href={link.href} external>
@@ -37,6 +38,7 @@ const { contacts } = site
       </div>
       <div
         class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-line pt-4 text-xs text-ink-muted"
+        data-reveal
       >
         <span>
           {site.name} / {site.role}

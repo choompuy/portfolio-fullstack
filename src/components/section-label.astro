@@ -8,7 +8,10 @@ interface Props {
 const { label, count, class: className } = Astro.props
 ---
 
-<div class:list={['flex items-center justify-between pb-4 border-b border-line', className]}>
+<div
+  class:list={['flex items-center justify-between pb-4 border-b border-line', className]}
+  data-reveal
+>
   <span class="text-xs font-medium uppercase tracking-[0.08em] text-ink-faint">{label}</span>
   <span class="text-sm text-ink-faint">{count}</span>
 </div>

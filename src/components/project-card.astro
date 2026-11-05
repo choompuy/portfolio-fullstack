@@ -13,7 +13,7 @@ const { project } = Astro.props
 const wide = project.layout === 'wide'
 ---
 
-<article>
+<article data-reveal="block">
   <div
     class="tilt relative isolate h-105 overflow-hidden rounded-block bg-page"
     style={`--hue: ${project.hue}`}

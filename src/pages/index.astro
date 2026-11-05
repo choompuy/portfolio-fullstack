@@ -33,5 +33,12 @@ import Contact from '../components/contact.astro'
       <Skills />
       <Contact />
     </main>
+    <script>
+      import { reveal } from '../scripts/reveal'
+      import { revealWords } from '../scripts/reveal-words'
+
+      reveal()
+      revealWords('[data-reveal-words]')
+    </script>
   </body>
 </html>

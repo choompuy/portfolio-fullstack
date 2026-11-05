@@ -339,3 +339,25 @@ html.anim [data-reveal-words]:not(.is-ready) {
   transform: translate(calc(var(--x) * -14px), calc(var(--y) * -10px));
   transition: transform 0.35s var(--ease-out);
 }
+
+/* Появление блоков при скролле: один раз, когда элемент доходит до экрана.
+   Скрипт reveal.ts добавляет .is-in и задаёт задержку --d для элементов, вошедших вместе.
+   data-reveal - текст (с лёгким размытием), data-reveal="block" - большие блоки без размытия. */
+html.anim [data-reveal] {
+  opacity: 0;
+  filter: blur(0.25rem);
+  transform: translateY(1rem);
+}
+html.anim [data-reveal='block'] {
+  filter: none;
+  transform: translateY(1.75rem);
+}
+html.anim [data-reveal].is-in {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition:
+    opacity 0.9s var(--ease-out) var(--d, 0s),
+    filter 0.9s var(--ease-out) var(--d, 0s),
+    transform 0.9s var(--ease-out) var(--d, 0s);
+}

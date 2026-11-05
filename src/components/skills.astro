@@ -9,15 +9,21 @@ import ArrowIcon from './arrow-icon.astro'
   <Container>
     <div class="grid gap-12 lg:grid-cols-12 lg:gap-x-6">
       <div class="lg:col-span-4">
-        <h2 class="text-[clamp(2rem,3.6vw,3.25rem)] font-normal leading-[1.08] tracking-[-0.02em]">
+        <h2
+          class="text-[clamp(2rem,3.6vw,3.25rem)] font-normal leading-[1.08] tracking-[-0.02em]"
+          data-reveal-words
+        >
           {site.skills.titleLines.map((line) => <span class="block">{line}</span>)}
         </h2>
-        <p class="mt-6 max-w-65 text-sm leading-snug text-ink-muted">{site.skills.text}</p>
+        <p class="mt-6 max-w-65 text-sm leading-snug text-ink-muted" data-reveal>{site.skills.text}</p>
       </div>
       <ul class="border-t border-line lg:col-span-8">
         {
           skills.map((group, index) => (
-            <li class="grid grid-cols-[2.5rem_1fr_auto] items-start gap-x-4 border-b border-line py-6">
+            <li
+              class="grid grid-cols-[2.5rem_1fr_auto] items-start gap-x-4 border-b border-line py-6"
+              data-reveal
+            >
               <span class="pt-2 text-xs text-ink-muted">{String(index + 1).padStart(2, '0')}</span>
               <div>
                 <h3 class="text-case font-normal">{group.name}</h3>
