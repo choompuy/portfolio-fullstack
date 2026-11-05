@@ -16,7 +16,7 @@ import ArrowIcon from './arrow-icon.astro'
     <div class="relative z-10 flex min-h-152 flex-col px-8 py-8">
       <!-- Header -->
       <header class="relative flex items-center justify-between gap-4">
-        <a href="#top" class="flex items-center gap-3">
+        <a href="#top" class="flex items-center gap-3" data-in="drop" data-step="1">
           <span
             class="grid size-8 place-items-center rounded-lg bg-ink text-base font-medium text-page"
           >
@@ -27,25 +27,31 @@ import ArrowIcon from './arrow-icon.astro'
         <nav
           aria-label="Основная навигация"
           class="absolute left-1/2 hidden -translate-x-1/2 gap-2 md:flex"
+          data-in="drop"
+          data-step="1"
         >
           {nav.map((item) => <NavPill href={item.href}>{item.label}</NavPill>)}
         </nav>
-        <Button href="#contacts" variant="primary">Связаться</Button>
+        <Button href="#contacts" variant="primary" data-in="drop" data-step="2">Связаться</Button>
       </header>
 
       <!-- Hero content -->
-      <div class="mt-20 animate-rise lg:mt-24">
+      <div class="mt-20 lg:mt-24">
         <p
           class="inline-flex items-center gap-2 rounded-full border border-line bg-soft py-1.75 pl-3 pr-3.5 text-[13px]"
+          data-in="drop"
+          data-step="3"
         >
-          <span aria-hidden="true" class="size-1.75 rounded-full bg-status"></span>
+          <span aria-hidden="true" class="status-dot size-1.75 rounded-full bg-status"></span>
           {site.status}
         </p>
-        <h1 class="mt-5 text-display font-normal tracking-[-0.03em]">{site.role}</h1>
+        <h1 class="mt-5 text-display font-normal tracking-[-0.03em]" data-split>{site.role}</h1>
         <div class="mt-10 max-w-140 lg:ml-[28%]">
-          <p class="text-lg leading-snug">{site.tagline}</p>
+          <div class="overflow-hidden pb-1">
+            <p class="text-lg leading-snug" data-in="up" data-step="4">{site.tagline}</p>
+          </div>
           <div class="mt-10">
-            <Button href="#projects">Смотреть проекты</Button>
+            <Button href="#projects" data-in="fade" data-step="5">Смотреть проекты</Button>
           </div>
         </div>
       </div>
@@ -53,6 +59,8 @@ import ArrowIcon from './arrow-icon.astro'
       <!-- Tech card -->
       <aside
         class="mt-10 rounded-[1.25rem] bg-card p-5 lg:absolute lg:bottom-8 lg:right-8 lg:mt-0 lg:w-71"
+        data-in="fade"
+        data-step="6"
       >
         <div
           class="flex items-center justify-between text-xs font-medium uppercase tracking-[0.08em]"
@@ -73,3 +81,9 @@ import ArrowIcon from './arrow-icon.astro'
     </div>
   </section>
 </div>
+
+<script>
+  import { splitTitle } from '../scripts/split-title'
+
+  splitTitle('[data-split]')
+</script>

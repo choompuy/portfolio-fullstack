@@ -12,7 +12,7 @@ const { about } = site
         {about.label}
       </h2>
       <div class="lg:col-span-9">
-        <p class="max-w-225 text-lead font-normal">
+        <p class="max-w-225 text-lead font-normal" data-reveal-words>
           <span>{about.leadBase}</span>
           <span class="text-accent">{about.leadAccent}</span>
         </p>
@@ -31,3 +31,9 @@ const { about } = site
     </div>
   </Container>
 </section>
+
+<script>
+  import { revealWords } from '../scripts/reveal-words'
+
+  revealWords('[data-reveal-words]')
+</script>

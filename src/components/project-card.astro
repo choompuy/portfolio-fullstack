@@ -15,7 +15,7 @@ const wide = project.layout === 'wide'
 
 <article>
   <div
-    class="relative isolate h-105 overflow-hidden rounded-block bg-page"
+    class="tilt relative isolate h-105 overflow-hidden rounded-block bg-page"
     style={`--hue: ${project.hue}`}
   >
     <Glow />
@@ -86,3 +86,9 @@ const wide = project.layout === 'wide'
     <ArrowButton label={`Открыть проект ${project.title}`} href={project.href} />
   </div>
 </article>
+
+<script>
+  import { tilt } from '../scripts/tilt'
+
+  tilt('.tilt')
+</script>
