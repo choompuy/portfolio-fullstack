@@ -16,10 +16,10 @@ import ChipList from './chip-list.astro'
           {site.skills.titleLines.map((line) => <span class="block">{line}</span>)}
         </h2>
       </div>
-      <ul class="border-t border-line lg:col-span-8" data-reveal-group>
+      <ul class="lg:col-span-8" data-reveal-group>
         {
           skills.map((group) => (
-            <li class="border-b border-line py-6" data-reveal>
+            <li class="first:border-t border-b border-line py-6" data-reveal>
               <h3 class="text-case font-normal">{group.name}</h3>
               <ChipList items={group.items} size="md" class="mt-4" />
             </li>

@@ -333,7 +333,7 @@ html.anim [data-reveal].is-in {
   inset: 0;
   pointer-events: none;
   background: var(--grain) 0 0 / 8rem;
-  opacity: 0.08;
+  opacity: calc(0.06 * var(--rev, 1));
 }
 .glow.is-gl::before,
 .glow.is-gl::after,
@@ -372,4 +372,9 @@ html.anim [data-ignite] {
     transparent calc(var(--r) + 40%)
   );
   animation: ignite-text 2.6s cubic-bezier(0.45, 0, 0.2, 1) 0.7s backwards;
+}
+
+/* Пока градиент не начал появляться, зерно скрыто (--rev задаёт gradient.ts) */
+html.anim .glow:not(.glow--fallback) {
+  --rev: 0;
 }

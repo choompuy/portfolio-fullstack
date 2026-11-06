@@ -19,10 +19,7 @@ const { about } = site
           <span>{about.leadBase}</span>
           <span class="text-accent">{about.leadAccent}</span>
         </p>
-        <dl
-          class="mt-14 flex flex-wrap gap-x-16 gap-y-8 border-t border-line pt-7"
-          data-reveal-group
-        >
+        <dl class="mt-14 flex flex-wrap gap-x-16 gap-y-8 pt-7" data-reveal-group>
           {
             about.metrics.map((metric) => (
               <div class="flex flex-col-reverse gap-2" data-reveal>

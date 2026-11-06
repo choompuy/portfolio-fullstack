@@ -25,7 +25,7 @@ const SCALE = 0.5 // разрешение канваса относительн�
 const MAX_WIDTH = 720
 const FRAME = 1000 / 30
 const SPEED = 0.35 // скорость движения градиента: чем меньше, тем спокойнее
-const DURATION = 3200 // длительность появления, мс
+const DURATION = 2400 // длительность появления, мс
 
 const VERT = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}'
 const FRAG = `
@@ -178,11 +178,13 @@ function create(host: HTMLElement): Gradient | null {
     canvas.width = Math.max(2, Math.round(width))
     canvas.height = Math.max(2, Math.round(width * ratio))
     gl.viewport(0, 0, canvas.width, canvas.height)
-    g.dirty = true
+    g.draw()
   }
   new ResizeObserver(resize).observe(host)
   resize()
 
+  // Зерно привязано к появлению градиента: пока он не начался, зерна нет (--rev: 0..1)
+  host.style.setProperty('--rev', reduce ? '1' : '0')
   host.prepend(canvas)
   host.classList.add('is-gl')
   return g
@@ -209,7 +211,7 @@ function ensure(host: HTMLElement): Gradient | null {
   return g
 }
 
-const easeInOut = (p: number) => (p < 0.5 ? 4 * p ** 3 : 1 - (-2 * p + 2) ** 3 / 2)
+const easeOut = (p: number) => 1 - (1 - p) ** 3
 
 let last = performance.now()
 let acc = 0
@@ -225,7 +227,8 @@ function loop(now: number) {
   live.forEach((g) => {
     if (g.start !== null && now >= g.start) {
       const p = Math.min(1, (now - g.start) / DURATION)
-      g.rev = easeInOut(p)
+      g.rev = easeOut(p)
+      g.host.style.setProperty('--rev', g.rev.toFixed(3))
       if (p >= 1) g.start = null
       g.dirty = true
     }
@@ -288,6 +291,15 @@ export function initGradients(selector = '[data-gradient]') {
   )
 
   hosts.forEach((host) => {
+    // Обложка стартует сразу, не дожидаясь наблюдателей
+    if (host.hasAttribute('data-gradient-priority')) {
+      const g = ensure(host)
+      if (g) {
+        g.revealed = true
+        live.add(g)
+        if (!reduce) g.start = performance.now()
+      }
+    }
     liveObserver.observe(host)
     revealObserver.observe(host)
   })
