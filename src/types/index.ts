@@ -3,6 +3,20 @@ export interface NavItem {
   href: string
 }
 
+/** Один экран устройства: https-ссылка на картинку или путь из public/ */
+export interface Shot {
+  src?: string
+  /** Если картинка склеена из нескольких экранов подряд: какой взять и сколько их всего */
+  sheet?: { index: number; panels: number; gap?: number }
+  /** Цвета полос над и под скриншотом в iPhone: берут из верхней и нижней кромки картинки */
+  bar?: { top?: string; bottom?: string }
+}
+
+export interface Devices {
+  mac?: Shot
+  phones?: Shot[]
+}
+
 export interface Project {
   slug: string
   title: string
@@ -13,8 +27,12 @@ export interface Project {
   hue: string
   group: 'commercial' | 'personal'
   layout: 'wide' | 'half' | 'third'
+  /** Ссылка на репозиторий */
   href?: string
-  image?: string
+  /** Ссылка на живое демо */
+  demo?: string
+  /** Что показывать в рамках устройств. Пустой объект {} рисует устройство с пустым экраном */
+  devices: Devices
   intro?: {
     title: string
     lead: string

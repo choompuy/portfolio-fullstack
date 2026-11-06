@@ -14,7 +14,6 @@ const personal = projects.filter((p) => p.group === 'personal').length
 
 export const site = {
   name: 'Васильев Айхал',
-  initial: 'А',
   role: 'Frontend Developer',
   tagline:
     'Делаю интерфейсы на React и Next.js: админки, дашборды, корзины и формы для сервисов доставки',
@@ -27,12 +26,6 @@ export const site = {
     label: 'Обо мне',
     leadBase: 'Привет, я Айхал.',
     leadAccent: ' Делаю фронтенд на React, Next.js и Vue и сам подключаю его к API.',
-    text: 'С 2026 года делаю frontend и API-слой для сервисов доставки по договору. Параллельно собираю личные проекты: от погодного дашборда до очереди песен для Twitch.',
-    facts: [
-      { label: 'Образование', value: 'Магистр прикладной математики и информатики, ДВФУ, 2025' },
-      { label: 'Формат работы', value: 'Удалённо, гибрид, офис' },
-      { label: 'Языки', value: 'Русский, английский B1' },
-    ],
     metrics: [
       {
         value: String(commercial),
@@ -50,8 +43,7 @@ export const site = {
     ],
   },
   skills: {
-    titleLines: ['Стек', 'и инструменты'],
-    text: 'Всё из этого есть в проектах выше',
+    titleLines: ['Навыки'],
   },
   contacts: {
     label: 'Контакты',

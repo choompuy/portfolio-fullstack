@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets'
+import type { ResolvedScreen } from '../../lib/screen'
+import Wall from './wall.astro'
+
+interface Props {
+  screen: ResolvedScreen
+  alt: string
+  sizes: string
+  widths?: number[]
+}
+
+const { screen, alt, sizes, widths = [480, 960] } = Astro.props
+const fill = 'absolute inset-0 size-full object-cover object-top'
+---
+
+{screen.kind === 'empty' && <Wall />}
+{
+  screen.kind === 'plain' &&
+    (screen.remote ? (
+      <Image
+        src={screen.src}
+        alt={alt}
+        inferSize
+        widths={widths}
+        sizes={sizes}
+        loading="lazy"
+        decoding="async"
+        class={fill}
+      />
+    ) : (
+      <img src={screen.src} alt={alt} loading="lazy" decoding="async" class={fill} />
+    ))
+}
+{
+  screen.kind === 'sheet' && (
+    <img
+      src={screen.img.src}
+      srcset={screen.img.srcSet.attribute}
+      sizes={screen.img.attributes.sizes}
+      width={screen.img.attributes.width}
+      height={screen.img.attributes.height}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      class="absolute h-auto max-w-none"
+      style={screen.style}
+    />
+  )
+}

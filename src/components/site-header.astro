@@ -1,0 +1,69 @@
+---
+import { nav, site } from '../data/site'
+import Button from './button.astro'
+import NavPill from './nav-pill.astro'
+---
+
+<!-- Пока этот сторож виден, шапка остаётся на обложке -->
+<span
+  id="header-sentinel"
+  class="pointer-events-none absolute left-0 top-0 h-20 w-px"
+  aria-hidden="true"></span>
+
+<header
+  id="site-header"
+  data-state="top"
+  class="site-header group/header pointer-events-none fixed inset-x-0 top-0 z-50 px-14 pt-14 data-[state=docked]:px-4 data-[state=docked]:pt-3"
+>
+  <div
+    class="bar pointer-events-auto relative mx-auto flex items-center justify-between gap-4 border border-transparent group-data-[state=docked]/header:max-w-208 group-data-[state=docked]/header:gap-6 group-data-[state=docked]/header:rounded-full group-data-[state=docked]/header:border-line-strong group-data-[state=docked]/header:bg-page/70 group-data-[state=docked]/header:p-1.5 group-data-[state=docked]/header:pl-2 group-data-[state=docked]/header:shadow-[0_1rem_2.5rem_rgb(0_0_0/0.45)] group-data-[state=docked]/header:backdrop-blur-xl"
+  >
+    <a
+      href="#top"
+      class="flex items-center gap-3 text-base font-medium group-data-[state=docked]/header:max-sm:hidden"
+      data-in="drop"
+      data-step="1"
+    >
+      {site.name}
+    </a>
+    <nav
+      aria-label="Основная навигация"
+      class="absolute left-1/2 hidden -translate-x-1/2 gap-2 md:flex"
+      data-in="drop"
+      data-step="1"
+    >
+      {nav.map((item) => <NavPill href={item.href}>{item.label}</NavPill>)}
+    </nav>
+    <Button href="#contacts" variant="primary" data-in="drop" data-step="2">Связаться</Button>
+  </div>
+</header>
+
+<script>
+  import { siteHeader } from '../scripts/site-header'
+
+  siteHeader('#site-header', '#header-sentinel')
+</script>
+
+<style>
+  /* Выезд сверху: только когда плашка появилась от прокрутки, а не при загрузке страницы */
+  .site-header[data-state='docked'][data-enter] .bar {
+    animation: dock-in 0.55s var(--ease-out) both;
+  }
+
+  @keyframes dock-in {
+    from {
+      opacity: 0;
+      transform: translateY(-160%);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header[data-state='docked'][data-enter] .bar {
+      animation: none;
+    }
+  }
+</style>

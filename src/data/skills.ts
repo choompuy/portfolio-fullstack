@@ -2,19 +2,19 @@ import type { SkillGroup } from '../types'
 
 export const skills: SkillGroup[] = [
   {
-    name: 'Frontend',
-    items: ['React 19', 'Next.js', 'Vue 3', 'TypeScript', 'Tailwind CSS', 'React Native'],
+    name: 'Дизайн интерфейсов',
+    items: ['Design tokens', 'UI-kit', 'Tailwind v4', 'Адаптив', 'Figma'],
   },
   {
-    name: 'Состояние и формы',
-    items: ['Redux Toolkit', 'RTK Query', 'Zustand', 'React Hook Form', 'Zod'],
+    name: 'Архитектура',
+    items: ['Feature-Sliced Design', 'RBAC', 'Слой API', 'RTK Query', 'Zod'],
   },
   {
-    name: 'Таблицы и графики',
-    items: ['TanStack Table', 'Recharts', 'Chart.js', 'shadcn/ui', 'PrimeVue'],
+    name: 'Оптимизация',
+    items: ['WebP через Sharp', 'Suspense', 'SQL RPC', 'Lazy loading'],
   },
   {
-    name: 'Данные и backend',
-    items: ['Supabase', 'Firebase', 'REST API', 'Express', 'SSE'],
+    name: 'Стек',
+    items: ['React 19', 'Next.js', 'Vue 3', 'TypeScript', 'Supabase', 'Firebase'],
   },
 ]

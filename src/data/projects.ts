@@ -3,6 +3,9 @@ import type { Project } from '../types'
 const shot = (repo: string, branch: string, file: string) =>
   `https://raw.githubusercontent.com/choompuy/${repo}/${branch}/docs/screenshots/${file}`
 
+/** Четыре экрана приложения, склеенные в одну картинку */
+const attractions = shot('reactnative-attractionsguide', 'master', 'hero.png')
+
 export const projects: Project[] = [
   {
     slug: 'eda-clone',
@@ -13,6 +16,7 @@ export const projects: Project[] = [
     year: '2026',
     note: 'Соло · full-stack',
     hue: '#8a5a4a',
+    devices: { mac: {} },
     group: 'commercial',
     layout: 'wide',
     intro: {
@@ -29,6 +33,7 @@ export const projects: Project[] = [
     year: '2026',
     note: 'Команда · frontend',
     hue: '#5d6190',
+    devices: { phones: [{}, {}] },
     group: 'commercial',
     layout: 'half',
   },
@@ -41,6 +46,7 @@ export const projects: Project[] = [
     year: '2026',
     note: 'Команда · frontend',
     hue: '#85703c',
+    devices: { mac: {}, phones: [{}] },
     group: 'commercial',
     layout: 'half',
   },
@@ -52,6 +58,7 @@ export const projects: Project[] = [
     stack: ['Node.js', 'TypeScript', 'Express', 'SSE', 'Twitch API'],
     year: '2026',
     hue: '#6e5b9a',
+    devices: { mac: {} },
     group: 'personal',
     layout: 'wide',
     href: 'https://github.com/choompuy/stream-queue',
@@ -71,7 +78,12 @@ export const projects: Project[] = [
     group: 'personal',
     layout: 'third',
     href: 'https://github.com/choompuy/vue-weather',
-    image: shot('vue-weather', 'main', 'dark.png'),
+    devices: {
+      mac: { src: shot('vue-weather', 'main', 'dark.png') },
+      phones: [
+        { src: shot('vue-weather', 'main', 'mobile.png'), bar: { top: '#2b2c30', bottom: '#2e3239' } },
+      ],
+    },
   },
   {
     slug: 'projectpaper',
@@ -84,7 +96,16 @@ export const projects: Project[] = [
     group: 'personal',
     layout: 'third',
     href: 'https://github.com/choompuy/nextjs-projectpaper',
-    image: shot('nextjs-projectpaper', 'master', 'tasks-board.png'),
+    devices: {
+      mac: { src: shot('nextjs-projectpaper', 'master', 'tasks-board.png') },
+      phones: [
+        {
+          src: shot('nextjs-projectpaper', 'master', 'mobile.png'),
+          sheet: { index: 1, panels: 3, gap: 10 },
+          bar: { top: '#f6f6f6', bottom: '#f3f3f3' },
+        },
+      ],
+    },
   },
   {
     slug: 'attractions-guide',
@@ -98,6 +119,24 @@ export const projects: Project[] = [
     group: 'personal',
     layout: 'third',
     href: 'https://github.com/choompuy/reactnative-attractionsguide',
-    image: shot('reactnative-attractionsguide', 'master', 'hero.png'),
+    devices: {
+      phones: [
+        {
+          src: attractions,
+          sheet: { index: 0, panels: 4 },
+          bar: { top: '#fefcf4', bottom: '#fefcf4' },
+        },
+        {
+          src: attractions,
+          sheet: { index: 1, panels: 4 },
+          bar: { top: '#fefcf4', bottom: '#fefcf4' },
+        },
+        {
+          src: attractions,
+          sheet: { index: 2, panels: 4 },
+          bar: { top: '#efeff0', bottom: '#eaecda' },
+        },
+      ],
+    },
   },
 ]

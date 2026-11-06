@@ -1,7 +1,6 @@
 ---
-import { nav, site } from '../data/site'
+import { site } from '../data/site'
 import Button from './button.astro'
-import NavPill from './nav-pill.astro'
 import ChipList from './chip-list.astro'
 import Glow from './glow.astro'
 ---
@@ -13,26 +12,8 @@ import Glow from './glow.astro'
   >
     <Glow size="lg" drift variant="aurora" priority />
     <div class="relative z-10 flex min-h-152 flex-col px-8 py-8">
-      <!-- Header -->
-      <header class="relative flex items-center justify-between gap-4">
-        <a href="#top" class="flex items-center gap-3" data-in="drop" data-step="1">
-          <span
-            class="grid size-8 place-items-center rounded-lg bg-ink text-base font-medium text-page"
-          >
-            {site.initial}
-          </span>
-          <span class="text-base font-medium">{site.name}</span>
-        </a>
-        <nav
-          aria-label="Основная навигация"
-          class="absolute left-1/2 hidden -translate-x-1/2 gap-2 md:flex"
-          data-in="drop"
-          data-step="1"
-        >
-          {nav.map((item) => <NavPill href={item.href}>{item.label}</NavPill>)}
-        </nav>
-        <Button href="#contacts" variant="primary" data-in="drop" data-step="2">Связаться</Button>
-      </header>
+      <!-- Место под шапку: сама шапка стоит поверх обложки, см. site-header.astro -->
+      <div class="h-11" aria-hidden="true"></div>
 
       <!-- Hero content -->
       <div class="mt-20 lg:mt-24">
