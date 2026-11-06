@@ -1,9 +1,10 @@
+import { afterHero } from './ready'
+
 /**
  * Слова появляются один раз, когда блок доходит до экрана (стили .st-word в global.css).
  * Значение data-reveal-words:
  *  - пусто или "dissolve": слова проявляются вразнобой, как растворение по шуму;
- *  - "ignite": от центра к краям;
- *  - "letters": растворение по буквам (для коротких заголовков).
+ *  - "ignite": от центра к краям.
  */
 export function revealWords(selector: string) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -12,17 +13,9 @@ export function revealWords(selector: string) {
 
 function init(root: HTMLElement) {
   const mode = root.dataset.revealWords || 'dissolve'
-  const units: HTMLElement[] = []
+  const words: HTMLElement[] = []
 
-  const unit = (text: string) => {
-    const el = document.createElement('span')
-    el.className = 'st-word'
-    el.textContent = text
-    units.push(el)
-    return el
-  }
-
-  // Оборачиваем слова (или буквы) в span, сохраняя вложенные теги и их классы
+  // Оборачиваем каждое слово в span, сохраняя вложенные теги и их классы
   const walk = (node: Node) => {
     for (const child of [...node.childNodes]) {
       if (child.nodeType !== Node.TEXT_NODE) {
@@ -35,38 +28,32 @@ function init(root: HTMLElement) {
           fragment.append(part)
           continue
         }
-        if (mode === 'letters') {
-          const word = document.createElement('span')
-          word.className = 'inline-block whitespace-nowrap'
-          word.setAttribute('aria-hidden', 'true')
-          for (const char of part) word.append(unit(char))
-          fragment.append(word)
-        } else {
-          fragment.append(unit(part))
-        }
+        const word = document.createElement('span')
+        word.className = 'st-word'
+        word.textContent = part
+        words.push(word)
+        fragment.append(word)
       }
       child.replaceWith(fragment)
     }
   }
-
-  if (mode === 'letters') root.setAttribute('aria-label', root.textContent ?? '')
   walk(root)
-  order(units.length, mode).forEach((rank, i) => units[i].style.setProperty('--i', String(rank)))
+  order(words.length, mode).forEach((rank, i) => words[i].style.setProperty('--i', String(rank)))
   root.classList.add('is-ready')
 
   // Запускаем один раз, когда верх блока поднялся выше 80% высоты экрана
   const observer = new IntersectionObserver(
     (entries) => {
       if (!entries.some((entry) => entry.isIntersecting)) return
-      root.classList.add('is-in')
       observer.disconnect()
+      afterHero(() => root.classList.add('is-in'))
     },
     { rootMargin: '0px 0px -20% 0px' }
   )
   observer.observe(root)
 }
 
-/** Ранг появления каждого элемента: чем меньше, тем раньше */
+/** Ранг появления каждого слова: чем меньше, тем раньше */
 function order(count: number, mode: string): number[] {
   if (mode === 'ignite') {
     const middle = (count - 1) / 2

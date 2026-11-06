@@ -1,6 +1,6 @@
 ---
-type Variant = 'default' | 'primary' | 'success' | 'danger' | 'outline'
-type Size = 'sm' | 'md' | 'lg' | 'pill'
+type Variant = 'default' | 'primary'
+type Size = 'sm' | 'md' | 'lg'
 type Element = 'button' | 'a' | 'span'
 
 interface Props {
@@ -8,7 +8,6 @@ interface Props {
   variant?: Variant
   size?: Size
   disabled?: boolean
-  flat?: boolean
   href?: string
   type?: 'button' | 'submit' | 'reset'
   class?: string
@@ -19,7 +18,6 @@ const {
   variant = 'default',
   size = 'md',
   disabled = false,
-  flat = false,
   href,
   type = 'button',
   class: className,
@@ -28,7 +26,7 @@ const {
 ---
 
 <Chip
-  class:list={['chip', `chip--${variant}`, `chip--${size}`, flat && 'chip--flat', className]}
+  class:list={['chip', `chip--${variant}`, `chip--${size}`, className]}
   href={Chip === 'a' ? href : undefined}
   type={Chip === 'button' ? type : undefined}
   disabled={Chip === 'button' ? disabled : undefined}
@@ -69,12 +67,6 @@ const {
     padding-inline: 1.25rem;
     font-size: 1rem;
   }
-  .chip--pill {
-    height: 2.75rem;
-    padding: 0 1.25rem;
-    font-size: 1rem;
-    font-weight: 500;
-  }
 
   .chip--default {
     border: 1px solid var(--color-line-strong);
@@ -84,12 +76,6 @@ const {
   .chip--primary {
     background: var(--color-ink);
     color: var(--color-page);
-    font-weight: 500;
-  }
-  .chip--success {
-    border: 1px solid var(--color-line);
-    background: var(--color-soft);
-    color: var(--color-status);
     font-weight: 500;
   }
 

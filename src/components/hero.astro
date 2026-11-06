@@ -11,7 +11,7 @@ import Glow from './glow.astro'
     class="relative isolate overflow-hidden rounded-block bg-page"
     style="--hue: var(--color-accent)"
   >
-    <Glow size="lg" drift />
+    <Glow size="lg" drift variant="aurora" priority />
     <div class="relative z-10 flex min-h-152 flex-col px-8 py-8">
       <!-- Header -->
       <header class="relative flex items-center justify-between gap-4">
@@ -44,7 +44,7 @@ import Glow from './glow.astro'
           <span aria-hidden="true" class="status-dot size-1.75 rounded-full bg-status"></span>
           {site.status}
         </p>
-        <h1 class="mt-5 text-display font-normal tracking-[-0.03em]" data-split>{site.role}</h1>
+        <h1 class="mt-5 text-display font-normal tracking-[-0.03em]" data-ignite>{site.role}</h1>
         <div class="mt-10 max-w-140 lg:ml-[28%]">
           <div class="overflow-hidden pb-1">
             <p class="text-lg leading-snug" data-in="up" data-step="4">{site.tagline}</p>
@@ -67,9 +67,3 @@ import Glow from './glow.astro'
     </div>
   </section>
 </div>
-
-<script>
-  import { splitTitle } from '../scripts/split-title'
-
-  splitTitle('[data-split]')
-</script>

@@ -184,20 +184,6 @@
     transform: none;
   }
 }
-@keyframes in-letter {
-  from {
-    opacity: 0;
-    filter: blur(0.875rem);
-    transform: translateY(45%);
-    font-weight: 200;
-  }
-  to {
-    opacity: 1;
-    filter: none;
-    transform: none;
-    font-weight: 400;
-  }
-}
 @keyframes status-ping {
   from {
     transform: scale(1);
@@ -239,18 +225,6 @@ html.anim [data-step='6'] {
   animation-delay: 2s;
 }
 
-/* Заголовок: скрыт, пока скрипт не разобьёт его на буквы */
-html.anim [data-split]:not(.is-split) {
-  opacity: 0;
-}
-.lt {
-  display: inline-block;
-}
-html.anim .lt {
-  opacity: 0;
-  animation: in-letter 1.1s var(--ease-out) calc(0.7s + var(--i) * 55ms) both;
-}
-
 /* Пульс у статуса «Открыт к предложениям» */
 .status-dot {
   position: relative;
@@ -279,8 +253,8 @@ html.anim [data-reveal-words]:not(.is-ready) {
   opacity: 1;
   filter: none;
   transition:
-    opacity 0.9s var(--ease-out) calc(var(--i) * 35ms),
-    filter 0.9s var(--ease-out) calc(var(--i) * 35ms);
+    opacity 1.2s var(--ease-out) calc(var(--i) * 45ms),
+    filter 1.2s var(--ease-out) calc(var(--i) * 45ms);
 }
 
 /* Наклон карточки проекта, светящийся контур и сдвиг скриншота на другой глубине.
@@ -366,4 +340,36 @@ html.anim [data-reveal].is-in {
 html.anim .glow:not(.glow--fallback)::before,
 html.anim .glow:not(.glow--fallback)::after {
   display: none;
+}
+
+/* Заголовок обложки разгорается от центра: маска расходится к краям, размытие уходит.
+   Буквы не режутся на span, поэтому кернинг остаётся родным и в DOM нет лишних узлов.
+   fill-mode backwards: после анимации стили сами возвращаются к обычным. */
+@property --r {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 150%;
+}
+@keyframes ignite-text {
+  from {
+    --r: -40%;
+    filter: blur(0.75rem);
+  }
+  to {
+    --r: 150%;
+    filter: blur(0);
+  }
+}
+html.anim [data-ignite] {
+  -webkit-mask-image: radial-gradient(
+    ellipse farthest-side at 50% 50%,
+    #000 var(--r),
+    transparent calc(var(--r) + 40%)
+  );
+  mask-image: radial-gradient(
+    ellipse farthest-side at 50% 50%,
+    #000 var(--r),
+    transparent calc(var(--r) + 40%)
+  );
+  animation: ignite-text 2.6s cubic-bezier(0.45, 0, 0.2, 1) 0.7s backwards;
 }

@@ -1,9 +1,12 @@
+import { afterHero } from './ready'
+
 /**
  * WebGL-градиент для блоков .glow[data-gradient] (оттенок берётся из --hue).
- * Шейдер считает плавающие цветовые точки с жидким искажением. Лёгкий режим:
- * половинное разрешение, не больше 30 кадров в секунду, один общий цикл на все блоки,
- * рисуются только видимые блоки, на скрытой вкладке пауза.
- * Появление считает сам шейдер: "dissolve" (растворение по шуму) или "ignite" (разгорание из центра).
+ * Два стиля: mesh (мягкие пятна) и aurora (спокойное облако на весь блок).
+ * Лёгкий режим: половинное разрешение, не больше 30 кадров в секунду, один общий цикл,
+ * рисуются только видимые блоки, контекст создаётся при приближении блока к экрану,
+ * на скрытой вкладке пауза. Появление считает сам шейдер: "dissolve" (растворение по шуму)
+ * или "ignite" (разгорание из центра до самых краёв).
  */
 type Rgb = [number, number, number]
 
@@ -12,7 +15,6 @@ interface Gradient {
   draw: () => void
   t: number
   rev: number
-  revMode: number
   start: number | null
   revealed: boolean
   dirty: boolean
@@ -22,7 +24,8 @@ const PAGE: Rgb = [0.067, 0.067, 0.067]
 const SCALE = 0.5 // разрешение канваса относительно CSS-пикселей
 const MAX_WIDTH = 720
 const FRAME = 1000 / 30
-const DURATION = 1900
+const SPEED = 0.35 // скорость движения градиента: чем меньше, тем спокойнее
+const DURATION = 3200 // длительность появления, мс
 
 const VERT = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}'
 const FRAG = `
@@ -34,45 +37,58 @@ precision mediump float;
 uniform vec2 uRes;uniform float uT,uMode,uRev,uRM;uniform vec3 uBg,uC[4];
 float h(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+1.),f.x),f.y);}
-float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*n(p);p=p*2.03+7.1;a*=.5;}return v;}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<3;i++){v+=a*n(p);p=p*2.03+7.1;a*=.5;}return v;}
 void main(){
   vec2 uv=gl_FragCoord.xy/uRes;float as=uRes.x/uRes.y;vec2 p=(uv-.5)*vec2(as,1.);float t=uT;
-  vec2 w=vec2(fbm(p*1.5+vec2(0.,t*.12)),fbm(p*1.5+vec2(4.,-t*.1)));
-  p+=(w-.5)*mix(.32,1.1,uMode);
-  vec3 col=vec3(0.);
-  for(int i=0;i<4;i++){float fi=float(i);
-    vec2 c=vec2(sin(t*.23+fi*1.9)*.38*as,cos(t*.17+fi*2.7)*.34);
-    float d=length(p-c);col+=uC[i]*exp(-d*d*mix(7.,3.4,uMode));}
-  col=1.-exp(-col*.85);
-  vec3 c=uBg+col*.8;
-  float m=1.;float nz=fbm(uv*vec2(as,1.)*2.5+3.);
-  if(uRM>1.5){float d=length((uv-vec2(.5,.45))*vec2(as,1.))+(nz-.5)*.28;float e=uRev*1.4-.2;m=1.-smoothstep(e-.3,e,d);}
-  else if(uRM>.5){m=smoothstep(nz-.15,nz+.15,uRev*1.4-.2);}
+  vec3 c=uBg;
+  if(uMode>.5){
+    // aurora: облако на весь блок, без отдельных кругов
+    vec2 q=vec2(fbm(p*.7+vec2(0.,t*.1)),fbm(p*.7+vec2(5.2,-t*.08)));
+    float f=fbm(p*.8+1.1*q+vec2(t*.03,0.));
+    c+=uC[2]*.42*smoothstep(.1,.7,f);
+    c+=uC[0]*.26*smoothstep(.3,.85,f);
+    c+=uC[1]*.14*smoothstep(.5,1.,f);
+  }else{
+    // mesh: три мягких пятна
+    vec2 w=vec2(fbm(p*1.5+vec2(0.,t*.12)),fbm(p*1.5+vec2(4.,-t*.1)));
+    p+=(w-.5)*.2;
+    vec3 col=vec3(0.);
+    for(int i=0;i<3;i++){float fi=float(i);
+      vec2 b=vec2(sin(t*.23+fi*2.1)*.36*as,cos(t*.17+fi*2.7)*.3);
+      float d=length(p-b);col+=uC[i]*exp(-d*d*8.);}
+    c+=(1.-exp(-col*.7))*.5;
+  }
+  // появление: маска доходит до всех краёв, когда uRev = 1
+  float m=1.;float nz=fbm(uv*vec2(as,1.)*1.8+3.);
+  if(uRM>1.5){float d=length((uv-.5)*2.)/1.4142+(nz-.5)*.35;float e=uRev*2.5-.5;m=1.-smoothstep(e-.6,e,d);}
+  else if(uRM>.5){m=smoothstep(nz-.25,nz+.25,uRev*1.5-.25);}
   gl_FragColor=vec4(mix(uBg,c,m),1.);
 }`
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
 const live = new Set<Gradient>()
 const gradients = new WeakMap<Element, Gradient>()
+const failed = new WeakSet<Element>()
 const probe = document.createElement('canvas').getContext('2d')
 
 /** Любой CSS-цвет (hex, rgb, color-mix) в числа 0..1 */
 function toRgb(css: string): Rgb {
-  if (!probe) return [0.35, 0.48, 0.51]
+  const fallback: Rgb = [0.35, 0.48, 0.51]
+  if (!probe) return fallback
   probe.fillStyle = '#587b82'
   probe.fillStyle = css
   const hex = probe.fillStyle
-  if (!hex.startsWith('#')) return [0.35, 0.48, 0.51]
+  if (!hex.startsWith('#')) return fallback
   return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255) as Rgb
 }
 
 const mix = (a: Rgb, b: Rgb, t: number) => a.map((v, i) => v + (b[i] - v) * t) as Rgb
 
-/** Четыре цвета градиента из одного оттенка: светлее, светлее ещё, темнее, чуть светлее */
+/** Четыре цвета градиента из одного оттенка. Светлые доли небольшие, чтобы не слепило */
 function palette(hue: Rgb): Rgb[] {
   const white: Rgb = [1, 1, 1]
   const black: Rgb = [0, 0, 0]
-  return [mix(hue, white, 0.15), mix(hue, white, 0.5), mix(hue, black, 0.35), mix(hue, white, 0.3)]
+  return [mix(hue, white, 0.1), mix(hue, white, 0.35), mix(hue, black, 0.4), mix(hue, white, 0.2)]
 }
 
 /** Плитка шума создаётся один раз, дальше это обычная картинка (--grain в CSS) */
@@ -133,7 +149,7 @@ function create(host: HTMLElement): Gradient | null {
 
   const hue = toRgb(getComputedStyle(host).getPropertyValue('--hue').trim())
   const colors = new Float32Array(palette(hue).flat())
-  const mode = Number(host.dataset.gradientMode ?? 0)
+  const mode = host.dataset.gradientStyle === 'aurora' ? 1 : 0
   const revMode = host.dataset.gradient === 'ignite' ? 2 : 1
 
   const g: Gradient = {
@@ -151,7 +167,6 @@ function create(host: HTMLElement): Gradient | null {
     },
     t: Math.random() * 40,
     rev: reduce ? 1 : 0,
-    revMode,
     start: null,
     revealed: false,
     dirty: true,
@@ -173,6 +188,29 @@ function create(host: HTMLElement): Gradient | null {
   return g
 }
 
+/** Контекст создаётся один раз, когда блок подошёл к экрану. Без WebGL остаётся CSS-свечение */
+function ensure(host: HTMLElement): Gradient | null {
+  const existing = gradients.get(host)
+  if (existing) return existing
+  if (failed.has(host)) return null
+
+  let g: Gradient | null = null
+  try {
+    g = create(host)
+  } catch {
+    g = null
+  }
+  if (!g) {
+    failed.add(host)
+    host.classList.add('glow--fallback')
+    return null
+  }
+  gradients.set(host, g)
+  return g
+}
+
+const easeInOut = (p: number) => (p < 0.5 ? 4 * p ** 3 : 1 - (-2 * p + 2) ** 3 / 2)
+
 let last = performance.now()
 let acc = 0
 
@@ -187,12 +225,12 @@ function loop(now: number) {
   live.forEach((g) => {
     if (g.start !== null && now >= g.start) {
       const p = Math.min(1, (now - g.start) / DURATION)
-      g.rev = 1 - (1 - p) ** 3
+      g.rev = easeInOut(p)
       if (p >= 1) g.start = null
       g.dirty = true
     }
     if (!reduce) {
-      g.t += step
+      g.t += step * SPEED
       g.dirty = true
     }
     if (g.dirty) g.draw()
@@ -204,55 +242,52 @@ export function initGradients(selector = '[data-gradient]') {
   if (!hosts.length) return
   makeGrain()
 
-  // Рисуем блок, пока он на экране (с небольшим запасом)
+  // Рисуем блок, пока он на экране (с запасом), и создаём контекст заранее
   const liveObserver = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        const g = gradients.get(entry.target)
-        if (!g) continue
+        const host = entry.target as HTMLElement
         if (entry.isIntersecting) {
-          live.add(g)
-          g.dirty = true
+          const g = ensure(host)
+          if (g) {
+            live.add(g)
+            g.dirty = true
+          }
         } else {
-          live.delete(g)
+          const g = gradients.get(host)
+          if (g) live.delete(g)
         }
       }
     },
-    { rootMargin: '150px' }
+    { rootMargin: '300px' }
   )
 
   // Запускаем появление один раз, когда блок виден хотя бы на четверть
   const revealObserver = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        const g = gradients.get(entry.target)
-        if (!g || !entry.isIntersecting || g.revealed) continue
+        const host = entry.target as HTMLElement
+        if (!entry.isIntersecting) continue
+        const g = ensure(host)
+        if (!g || g.revealed) continue
         g.revealed = true
-        revealObserver.unobserve(entry.target)
+        revealObserver.unobserve(host)
         if (reduce) continue
-        // Подстраиваемся под задержку карточки, чтобы градиент и карточка появлялись вместе
-        setTimeout(() => {
-          const card = g.host.closest<HTMLElement>('[data-reveal]')
+
+        const begin = () => {
+          // Подстраиваемся под задержку карточки, чтобы градиент и карточка появлялись вместе
+          const card = host.closest<HTMLElement>('[data-reveal]')
           const delay = card ? parseFloat(card.style.getPropertyValue('--d')) || 0 : 0
-          g.start = performance.now() + 150 + delay
-        }, 100)
+          g.start = performance.now() + delay
+        }
+        if (host.hasAttribute('data-gradient-priority')) begin()
+        else afterHero(() => setTimeout(begin, 100))
       }
     },
     { threshold: 0.25 }
   )
 
   hosts.forEach((host) => {
-    let g: Gradient | null = null
-    try {
-      g = create(host)
-    } catch {
-      g = null
-    }
-    if (!g) {
-      host.classList.add('glow--fallback')
-      return
-    }
-    gradients.set(host, g)
     liveObserver.observe(host)
     revealObserver.observe(host)
   })

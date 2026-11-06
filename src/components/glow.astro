@@ -2,17 +2,28 @@
 interface Props {
   size?: 'default' | 'lg'
   drift?: boolean
+  /** mesh - мягкие пятна (карточки), aurora - спокойное облако на весь блок */
+  variant?: 'mesh' | 'aurora'
   /** Как градиент появляется: растворение по шуму или разгорание из центра */
   reveal?: 'dissolve' | 'ignite'
+  /** Блок первого экрана: появляется сразу, остальные ждут конца анимации обложки */
+  priority?: boolean
 }
 
-const { size = 'default', drift = false, reveal = 'dissolve' } = Astro.props
+const {
+  size = 'default',
+  drift = false,
+  variant = 'mesh',
+  reveal = 'dissolve',
+  priority = false,
+} = Astro.props
 ---
 
 <div
   class:list={['glow', size === 'lg' && 'glow--lg', drift && 'glow--drift']}
   data-gradient={reveal}
-  data-gradient-mode={size === 'lg' ? 0.4 : 0}
+  data-gradient-style={variant}
+  data-gradient-priority={priority ? '' : undefined}
 >
   <i class="grain"></i>
 </div>

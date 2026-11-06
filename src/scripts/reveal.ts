@@ -1,3 +1,5 @@
+import { afterHero } from './ready'
+
 const GROUP = '[data-reveal-group]'
 const STEP = 80 // мс между соседними элементами
 const MAX_STAGGER = 5 // у одиночных элементов, вошедших вместе, задержка не растёт дальше этого шага
@@ -27,13 +29,15 @@ export function reveal() {
           const el = entry.target as HTMLElement
           observer.unobserve(el)
 
-          if (el.matches(GROUP)) {
-            el.querySelectorAll<HTMLElement>(':scope > [data-reveal]').forEach((child, i) =>
-              show(child, i * STEP)
-            )
-          } else {
-            show(el, Math.min(order, MAX_STAGGER) * STEP)
-          }
+          afterHero(() => {
+            if (el.matches(GROUP)) {
+              el.querySelectorAll<HTMLElement>(':scope > [data-reveal]').forEach((child, i) =>
+                show(child, i * STEP)
+              )
+            } else {
+              show(el, Math.min(order, MAX_STAGGER) * STEP)
+            }
+          })
         })
     },
     // Мелкие шаги порога, чтобы поймать момент, когда видна нужная часть высокого блока
