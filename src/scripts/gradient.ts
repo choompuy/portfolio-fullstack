@@ -69,6 +69,7 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
 const live = new Set<Gradient>()
 const gradients = new WeakMap<Element, Gradient>()
 const failed = new WeakSet<Element>()
+const released = new WeakSet<Element>()
 const probe = document.createElement('canvas').getContext('2d')
 
 /** Любой CSS-цвет (hex, rgb, color-mix) в числа 0..1 */
@@ -116,6 +117,8 @@ function create(host: HTMLElement): Gradient | null {
     powerPreference: 'low-power',
   })
   if (!gl) return null
+  const precision = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT)
+  if (!precision || precision.precision === 0) return null
 
   const shader = (type: number, source: string) => {
     const s = gl.createShader(type)!
@@ -152,6 +155,7 @@ function create(host: HTMLElement): Gradient | null {
   const mode = host.dataset.gradientStyle === 'aurora' ? 1 : 0
   const revMode = host.dataset.gradient === 'ignite' ? 2 : 1
 
+  const done = released.has(host) // блок уже появлялся: возвращаем сразу в финальном виде
   const g: Gradient = {
     host,
     draw: () => {
@@ -166,9 +170,9 @@ function create(host: HTMLElement): Gradient | null {
       g.dirty = false
     },
     t: Math.random() * 40,
-    rev: reduce ? 1 : 0,
+    rev: reduce || done ? 1 : 0,
     start: null,
-    revealed: false,
+    revealed: done,
     dirty: true,
   }
 
@@ -180,17 +184,55 @@ function create(host: HTMLElement): Gradient | null {
     gl.viewport(0, 0, canvas.width, canvas.height)
     g.draw()
   }
-  new ResizeObserver(resize).observe(host)
   resize()
+  if (looksBroken(gl)) return null
+  new ResizeObserver(resize).observe(host)
 
   // Зерно привязано к появлению градиента: пока он не начался, зерна нет (--rev: 0..1)
-  host.style.setProperty('--rev', reduce ? '1' : '0')
+  host.style.setProperty('--rev', reduce || done ? '1' : '0')
   host.prepend(canvas)
   host.classList.add('is-gl')
+  canvas.addEventListener('webglcontextlost', (event) => {
+    event.preventDefault()
+    if (gradients.has(host)) fail(host)
+  })
   return g
 }
 
-/** Контекст создаётся один раз, когда блок подошёл к экрану. Без WebGL остаётся CSS-свечение */
+function looksBroken(gl: WebGLRenderingContext) {
+  if (gl.getError() !== gl.NO_ERROR) return true
+  const pixel = new Uint8Array(4)
+  gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel)
+  // Фон страницы тёмный, поэтому белый кадр это брак
+  return pixel[0] > 200 && pixel[1] > 200 && pixel[2] > 200
+}
+
+/** Возвращаем блоку запасное CSS-свечение и убираем канвас */
+function fail(host: HTMLElement) {
+  const g = gradients.get(host)
+  if (g) live.delete(g)
+  gradients.delete(host)
+  failed.add(host)
+  host.querySelector('.glow__canvas')?.remove()
+  host.classList.remove('is-gl')
+  host.classList.add('glow--fallback')
+  host.style.removeProperty('--rev')
+}
+
+/** Далеко от экрана контекст освобождается: на телефонах их число и память ограничены */
+function release(host: HTMLElement) {
+  const g = gradients.get(host)
+  if (!g) return
+  live.delete(g)
+  gradients.delete(host)
+  released.add(host)
+  const canvas = host.querySelector<HTMLCanvasElement>('.glow__canvas')
+  canvas?.getContext('webgl')?.getExtension('WEBGL_lose_context')?.loseContext()
+  canvas?.remove()
+  host.classList.remove('is-gl')
+}
+
+/** Контекст создаётся, когда блок подошёл к экрану. Без WebGL остаётся CSS-свечение */
 function ensure(host: HTMLElement): Gradient | null {
   const existing = gradients.get(host)
   if (existing) return existing
@@ -203,8 +245,7 @@ function ensure(host: HTMLElement): Gradient | null {
     g = null
   }
   if (!g) {
-    failed.add(host)
-    host.classList.add('glow--fallback')
+    fail(host)
     return null
   }
   gradients.set(host, g)
@@ -290,6 +331,16 @@ export function initGradients(selector = '[data-gradient]') {
     { threshold: 0.25 }
   )
 
+  // Блоки далеко от экрана отдают контекст обратно, при возвращении создаются заново
+  const farObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) release(entry.target as HTMLElement)
+      }
+    },
+    { rootMargin: '1500px' }
+  )
+
   hosts.forEach((host) => {
     // Обложка стартует сразу, не дожидаясь наблюдателей
     if (host.hasAttribute('data-gradient-priority')) {
@@ -302,6 +353,7 @@ export function initGradients(selector = '[data-gradient]') {
     }
     liveObserver.observe(host)
     revealObserver.observe(host)
+    farObserver.observe(host)
   })
 
   requestAnimationFrame(loop)

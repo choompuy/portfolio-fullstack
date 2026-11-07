@@ -205,24 +205,25 @@ html.anim [data-in='drop'] {
 html.anim [data-in='up'] {
   animation-name: in-up;
 }
-/* Порядок появления на обложке: меню, статус, заголовок (0.7 с), текст, кнопка, карточка */
+/* Порядок появления на обложке: меню, статус, заголовок (0.3 с), текст, кнопка, карточка.
+   Всё укладывается примерно в полторы секунды и идёт почти сразу за статусом. */
 html.anim [data-step='1'] {
-  animation-delay: 0.1s;
+  animation-delay: 0.05s;
 }
 html.anim [data-step='2'] {
-  animation-delay: 0.25s;
+  animation-delay: 0.1s;
 }
 html.anim [data-step='3'] {
-  animation-delay: 0.45s;
+  animation-delay: 0.2s;
 }
 html.anim [data-step='4'] {
-  animation-delay: 1.6s;
+  animation-delay: 0.45s;
 }
 html.anim [data-step='5'] {
-  animation-delay: 1.85s;
+  animation-delay: 0.55s;
 }
 html.anim [data-step='6'] {
-  animation-delay: 2s;
+  animation-delay: 0.65s;
 }
 
 /* Пульс у статуса «Открыт к предложениям» */
@@ -371,7 +372,7 @@ html.anim [data-ignite] {
     #000 var(--r),
     transparent calc(var(--r) + 40%)
   );
-  animation: ignite-text 2.6s cubic-bezier(0.45, 0, 0.2, 1) 0.7s backwards;
+  animation: ignite-text 2.6s cubic-bezier(0.45, 0, 0.2, 1) backwards;
 }
 
 /* Пока градиент не начал появляться, зерно скрыто (--rev задаёт gradient.ts) */
