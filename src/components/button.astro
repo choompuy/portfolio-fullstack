@@ -1,5 +1,5 @@
 ---
-type Variant = 'primary' | 'ghost'
+type Variant = 'primary' | 'ghost' | 'text'
 type Element = 'button' | 'a'
 
 interface Props {
@@ -64,6 +64,7 @@ const {
     font-weight: 500;
     line-height: 1;
     text-decoration: none;
+    text-wrap: nowrap;
     transition: all 0.2s ease;
     cursor: pointer;
   }
@@ -84,6 +85,14 @@ const {
 
   .btn--ghost:hover {
     background: rgb(244 247 247 / 0.1);
+  }
+
+  .btn--text {
+    color: var(--color-ink-muted);
+  }
+
+  .btn--text:hover {
+    color: var(--color-ink);
   }
 
   .btn-arrow {

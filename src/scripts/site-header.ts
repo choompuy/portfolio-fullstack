@@ -1,19 +1,23 @@
 /**
  * Переключает шапку между обложкой и плавающей плашкой.
  * Сторож лежит в самом верху страницы: ушёл с экрана значит страница прокручена.
- * Анимацию выезда включаем только после первого срабатывания, чтобы она не играла при загрузке.
+ * Сам переход делает CSS. Он включается через data-ready чуть позже загрузки, чтобы шапка
+ * не анимировалась, когда браузер восстанавливает прокрутку после перезагрузки.
  */
+const READY_DELAY_MS = 300
+
 export function siteHeader(headerSelector: string, sentinelSelector: string) {
   const header = document.querySelector<HTMLElement>(headerSelector)
   const sentinel = document.querySelector<HTMLElement>(sentinelSelector)
   if (!header || !sentinel) return
 
-  let initial = true
-
   new IntersectionObserver(([entry]) => {
-    const docked = !entry.isIntersecting
-    header.dataset.state = docked ? 'docked' : 'top'
-    header.toggleAttribute('data-enter', docked && !initial)
-    initial = false
+    header.dataset.state = entry.isIntersecting ? 'top' : 'docked'
   }).observe(sentinel)
+
+  const enableTransitions = () =>
+    setTimeout(() => header.setAttribute('data-ready', ''), READY_DELAY_MS)
+
+  if (document.readyState === 'complete') enableTransitions()
+  else window.addEventListener('load', enableTransitions, { once: true })
 }

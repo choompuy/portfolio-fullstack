@@ -8,24 +8,28 @@ import NavPill from './nav-pill.astro'
 <span
   id="header-sentinel"
   class="pointer-events-none absolute left-0 top-0 h-20 w-px"
-  aria-hidden="true"></span>
+  aria-hidden="true"
+>
+</span>
 
 <header
   id="site-header"
   data-state="top"
-  class="site-header group/header pointer-events-none fixed inset-x-0 top-0 z-50 px-14 pt-14 data-[state=docked]:px-4 data-[state=docked]:pt-3"
+  class="group/header pointer-events-none fixed inset-x-0 top-0 z-50 px-14 pt-14 data-ready:transition-[padding] data-ready:duration-600 data-ready:ease-out data-[state=docked]:px-4 data-[state=docked]:pt-3"
 >
   <div
-    class="bar pointer-events-auto relative mx-auto flex items-center justify-between gap-4 border border-transparent group-data-[state=docked]/header:max-w-208 group-data-[state=docked]/header:gap-6 group-data-[state=docked]/header:rounded-full group-data-[state=docked]/header:border-line-strong group-data-[state=docked]/header:bg-page/70 group-data-[state=docked]/header:p-1.5 group-data-[state=docked]/header:pl-2 group-data-[state=docked]/header:shadow-[0_1rem_2.5rem_rgb(0_0_0/0.45)] group-data-[state=docked]/header:backdrop-blur-xl"
+    class="pointer-events-auto relative mx-auto flex max-w-full items-center justify-between gap-4 rounded-full border border-transparent bg-page/0 shadow-[0_1rem_2.5rem_rgb(0_0_0/0)] backdrop-blur-none group-data-ready/header:transition-[max-width,padding,gap,background-color,border-color,box-shadow,backdrop-filter] group-data-ready/header:duration-600 group-data-ready/header:ease-out group-data-[state=docked]/header:max-w-208 group-data-[state=docked]/header:gap-6 group-data-[state=docked]/header:border-line-strong group-data-[state=docked]/header:bg-page/70 group-data-[state=docked]/header:p-1.5 group-data-[state=docked]/header:pl-2 group-data-[state=docked]/header:shadow-[0_1rem_2.5rem_rgb(0_0_0/0.45)] group-data-[state=docked]/header:backdrop-blur-xl"
   >
-    <a
+    <Button
       href="#top"
-      class="flex items-center gap-3 text-base font-medium group-data-[state=docked]/header:max-sm:hidden"
+      variant="text"
+      class="group-data-[state=top]/header:px-0! group-data-[state=docked]/header:max-sm:hidden group-data-ready/header:transition-[max-width,opacity] group-data-ready/header:duration-600 group-data-ready/header:ease-out group-data-[state=docked]/header:max-sm:max-w-0 group-data-[state=docked]/header:max-sm:opacity-0"
       data-in="drop"
       data-step="1"
+      arrow={false}
     >
       {site.name}
-    </a>
+    </Button>
     <nav
       aria-label="Основная навигация"
       class="absolute left-1/2 hidden -translate-x-1/2 gap-2 md:flex"
@@ -43,27 +47,3 @@ import NavPill from './nav-pill.astro'
 
   siteHeader('#site-header', '#header-sentinel')
 </script>
-
-<style>
-  /* Выезд сверху: только когда плашка появилась от прокрутки, а не при загрузке страницы */
-  .site-header[data-state='docked'][data-enter] .bar {
-    animation: dock-in 0.55s var(--ease-out) both;
-  }
-
-  @keyframes dock-in {
-    from {
-      opacity: 0;
-      transform: translateY(-160%);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .site-header[data-state='docked'][data-enter] .bar {
-      animation: none;
-    }
-  }
-</style>
