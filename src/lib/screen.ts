@@ -37,7 +37,7 @@ export async function resolveScreen(
   if (!shot.src) return { kind: 'empty' }
   if (!shot.sheet) return { kind: 'plain', src: shot.src, remote: shot.src.startsWith('http') }
 
-  const { index, panels, gap = 0 } = shot.sheet
+  const { index, panels, gap = 0, pad = 0 } = shot.sheet
   const img = await getImage({
     src: shot.src,
     inferSize: true,
@@ -48,13 +48,13 @@ export async function resolveScreen(
   const width = Number(img.attributes.width)
   const height = Number(img.attributes.height)
 
-  const panelW = (width - gap * (panels - 1)) / panels
+  const panelW = (width - 2 * pad - gap * (panels - 1)) / panels
   const panelRatio = panelW / height
 
   // панель шире области: вписываем по высоте и обрезаем бока поровну (k > 1)
   const k = Math.max(1, panelRatio / PHONE_CONTENT_RATIO)
   const widthPct = (width / panelW) * k * 100
-  const leftPct = (-(k - 1) / 2 - ((index * (panelW + gap)) / panelW) * k) * 100
+  const leftPct = (-(k - 1) / 2 - (((pad + index * (panelW + gap)) / panelW) * k)) * 100
 
   return {
     kind: 'sheet',

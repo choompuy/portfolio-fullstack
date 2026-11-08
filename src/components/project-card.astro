@@ -7,9 +7,10 @@ import Devices from './devices.astro'
 
 interface Props {
   project: Project
+  number: number
 }
 
-const { project } = Astro.props
+const { project, number } = Astro.props
 const wide = project.layout === 'wide'
 ---
 
@@ -46,7 +47,7 @@ const wide = project.layout === 'wide'
 
       <div class="mt-auto flex items-end justify-between text-xs text-ink-muted">
         <span>{project.year}</span>
-        {project.note && <span>{project.note}</span>}
+        <span class="tabular-nums">{String(number).padStart(2, '0')}</span>
       </div>
     </div>
   </div>

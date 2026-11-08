@@ -14,7 +14,7 @@ const personal = projects.filter((p) => p.group === 'personal').length
 
 export const site = {
   name: 'Васильев Айхал',
-  role: 'Frontend Developer',
+  role: 'Fullstack Developer',
   tagline:
     'Делаю интерфейсы на React и Next.js: админки, дашборды, корзины и формы для сервисов доставки',
   status: 'Открыт к предложениям',

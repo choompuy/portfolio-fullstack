@@ -39,7 +39,7 @@ const rows = toRows(items)
     rows.map((row) => (
       <div class={rowClass[row.layout]} data-reveal-group>
         {row.items.map((project) => (
-          <ProjectCard project={project} />
+          <ProjectCard project={project} number={items.indexOf(project) + 1} />
         ))}
       </div>
     ))

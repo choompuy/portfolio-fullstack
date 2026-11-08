@@ -7,7 +7,7 @@ export interface NavItem {
 export interface Shot {
   src?: string
   /** Если картинка склеена из нескольких экранов подряд: какой взять и сколько их всего */
-  sheet?: { index: number; panels: number; gap?: number }
+  sheet?: { index: number; panels: number; gap?: number; pad?: number }
   /** Цвета полос над и под скриншотом в iPhone: берут из верхней и нижней кромки картинки */
   bar?: { top?: string; bottom?: string }
 }
@@ -22,7 +22,6 @@ export interface Project {
   description: string
   stack: string[]
   year: string
-  note?: string
   hue: string
   group: 'commercial' | 'personal'
   layout: 'wide' | 'half' | 'third'
