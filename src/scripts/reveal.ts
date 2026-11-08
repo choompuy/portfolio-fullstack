@@ -4,8 +4,12 @@ const GROUP = '[data-reveal-group]'
 const STEP = 80 // мс между соседними элементами
 const MAX_STAGGER = 5 // у одиночных элементов, вошедших вместе, задержка не растёт дальше этого шага
 
+/** Чипы первого экрана стартуют сразу, остальное ждёт конца анимации обложки */
+const gate = (el: HTMLElement, fn: () => void) =>
+  el.hasAttribute('data-chips-priority') ? fn() : afterHero(fn)
+
 /**
- * Элементы с data-reveal появляются один раз, когда доходят до экрана (стили в global.css).
+ * Элементы с data-reveal и списки чипов с data-chips появляются один раз, когда доходят до экрана (стили в global.css).
  * Дети контейнера с data-reveal-group появляются вместе с ним, строго по порядку в разметке.
  */
 export function reveal() {
@@ -29,7 +33,7 @@ export function reveal() {
           const el = entry.target as HTMLElement
           observer.unobserve(el)
 
-          afterHero(() => {
+          gate(el, () => {
             if (el.matches(GROUP)) {
               el.querySelectorAll<HTMLElement>(':scope > [data-reveal]').forEach((child, i) =>
                 show(child, i * STEP)
@@ -44,7 +48,7 @@ export function reveal() {
     { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
   )
 
-  document.querySelectorAll<HTMLElement>(`${GROUP}, [data-reveal]`).forEach((el) => {
+  document.querySelectorAll<HTMLElement>(`${GROUP}, [data-reveal], [data-chips]`).forEach((el) => {
     // Дети группы управляются самой группой
     if (!el.matches(GROUP) && el.parentElement?.matches(GROUP)) return
     observer.observe(el)

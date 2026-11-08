@@ -237,14 +237,20 @@ html.anim [data-reveal-words]:not(.is-ready) {
 .st-word {
   display: inline-block;
   opacity: 0;
-  filter: blur(0.5rem);
+  filter: blur(0.4rem);
+  transform: translateY(0.35em);
 }
 .is-in .st-word {
   opacity: 1;
   filter: none;
+  transform: none;
   transition:
-    opacity 1.2s var(--ease-out) calc(var(--i) * 45ms),
-    filter 1.2s var(--ease-out) calc(var(--i) * 45ms);
+    opacity 1s var(--ease-out) calc(var(--i) * 45ms),
+    transform 1s var(--ease-out) calc(var(--i) * 45ms),
+    filter 1s steps(12) calc(var(--i) * 45ms);
+}
+.is-hot .st-word {
+  will-change: opacity, transform, filter;
 }
 
 /* Наклон карточки проекта, светящийся контур и сдвиг скриншота на другой глубине.
@@ -288,12 +294,8 @@ html.anim [data-reveal-words]:not(.is-ready) {
    data-reveal - текст (с лёгким размытием), data-reveal="block" - большие блоки без размытия. */
 html.anim [data-reveal] {
   opacity: 0;
-  filter: blur(0.5rem);
+  filter: blur(0.375rem);
   transform: translateY(0.625rem);
-}
-html.anim [data-reveal='block'] {
-  filter: none;
-  transform: translateY(1.75rem);
 }
 html.anim [data-reveal].is-in {
   opacity: 1;
@@ -303,6 +305,25 @@ html.anim [data-reveal].is-in {
     opacity 0.9s var(--ease-out) var(--d, 0s),
     filter 0.9s var(--ease-out) var(--d, 0s),
     transform 0.9s var(--ease-out) var(--d, 0s);
+}
+/* Чипы выскакивают по очереди: лёгкий перелёт по масштабу и малое размытие ступенями.
+   Скрипт reveal.ts добавляет списку .is-in, --i - номер чипа, --base - общая задержка. */
+html.anim [data-chips] > li {
+  opacity: 0;
+  filter: blur(0.3rem);
+  transform: scale(0.82) translateY(0.25rem);
+}
+html.anim [data-chips].is-in > li {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease-out) calc(var(--base, 0ms) + var(--i) * 50ms),
+    filter 0.7s steps(8) calc(var(--base, 0ms) + var(--i) * 50ms),
+    transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--base, 0ms) + var(--i) * 50ms);
+}
+[data-chips-priority] {
+  --base: 750ms;
 }
 
 /* ---------- WebGL-градиент ----------

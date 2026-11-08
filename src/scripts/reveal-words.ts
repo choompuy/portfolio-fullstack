@@ -46,7 +46,10 @@ function init(root: HTMLElement) {
     (entries) => {
       if (!entries.some((entry) => entry.isIntersecting)) return
       observer.disconnect()
-      afterHero(() => root.classList.add('is-in'))
+      afterHero(() => {
+        root.classList.add('is-in', 'is-hot')
+        setTimeout(() => root.classList.remove('is-hot'), words.length * 45 + 1300)
+      })
     },
     { rootMargin: '0px 0px -20% 0px' }
   )

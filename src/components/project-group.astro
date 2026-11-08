@@ -37,7 +37,7 @@ const rows = toRows(items)
   <SectionLabel label={label} count={String(items.length).padStart(2, '0')} />
   {
     rows.map((row) => (
-      <div class={rowClass[row.layout]} data-reveal-group>
+      <div class={rowClass[row.layout]}>
         {row.items.map((project) => (
           <ProjectCard project={project} number={items.indexOf(project) + 1} />
         ))}

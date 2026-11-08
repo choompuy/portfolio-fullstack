@@ -2,10 +2,11 @@
 interface Props {
   items: string[]
   size?: 'sm' | 'md'
+  priority?: boolean
   class?: string
 }
 
-const { items, size = 'sm', class: className } = Astro.props
+const { items, size = 'sm', priority = false, class: className } = Astro.props
 
 const sizes = {
   sm: 'h-7 px-2 text-xs',
@@ -13,11 +14,16 @@ const sizes = {
 }
 ---
 
-<ul class:list={['flex flex-wrap gap-1.5', className]}>
+<ul
+  class:list={['flex flex-wrap gap-1.5', className]}
+  data-chips
+  data-chips-priority={priority ? '' : undefined}
+>
   {
-    items.map((item) => (
+    items.map((item, i) => (
       <li
         class={`inline-flex items-center rounded-full border border-line-strong bg-soft leading-none whitespace-nowrap ${sizes[size]}`}
+        style={`--i:${i}`}
       >
         {item}
       </li>
