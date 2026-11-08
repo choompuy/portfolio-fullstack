@@ -1,105 +1,45 @@
 ---
-type Variant = 'primary' | 'ghost' | 'text'
-type Element = 'button' | 'a'
+import ArrowIcon from './arrow-icon.astro'
 
 interface Props {
-  as?: Element
-  variant?: Variant
+  variant?: 'primary' | 'ghost' | 'text'
   href?: string
   external?: boolean
-  class?: string
   arrow?: boolean
+  class?: string
 }
 
 const {
-  as: Button = 'a',
   variant = 'ghost',
   href = '#',
   external = false,
-  class: className,
   arrow = true,
+  class: className,
   ...props
 }: Props = Astro.props
+
+const variants = {
+  primary: 'bg-ink text-page hover:bg-ink/85',
+  ghost: 'border border-line-strong bg-soft hover:bg-ink/10',
+  text: 'text-ink-muted hover:text-ink',
+}
 ---
 
-<Button
-  class:list={['btn', `btn--${variant}`, className]}
-  href={Button === 'a' ? href : undefined}
+<a
+  href={href}
   target={external ? '_blank' : undefined}
   rel={external ? 'noreferrer' : undefined}
+  class:list={[
+    'group/btn inline-flex h-11 items-center gap-2.5 rounded-full px-6 text-base leading-none font-medium whitespace-nowrap transition-colors duration-200',
+    variants[variant],
+    className,
+  ]}
   {...props}
 >
   <slot />
   {
     arrow && (
-      <svg
-        class="btn-arrow"
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M4 12L12 4M12 4H6M12 4V10"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
+      <ArrowIcon class="transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
     )
   }
-</Button>
-
-<style>
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-    height: 2.75rem;
-    padding-inline: 1.5rem;
-    border-radius: 9999px;
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1;
-    text-decoration: none;
-    text-wrap: nowrap;
-    transition: all 0.2s ease;
-    cursor: pointer;
-  }
-
-  .btn--primary {
-    background: var(--color-ink);
-    color: var(--color-page);
-  }
-
-  .btn--primary:hover {
-    background: rgb(244 247 247 / 0.85);
-  }
-
-  .btn--ghost {
-    border: 0.0625rem solid var(--color-line-strong);
-    background: var(--color-soft);
-  }
-
-  .btn--ghost:hover {
-    background: rgb(244 247 247 / 0.1);
-  }
-
-  .btn--text {
-    color: var(--color-ink-muted);
-  }
-
-  .btn--text:hover {
-    color: var(--color-ink);
-  }
-
-  .btn-arrow {
-    transition: transform 0.2s ease;
-  }
-
-  .btn:hover .btn-arrow {
-    transform: translate(0.125rem, -0.125rem);
-  }
-</style>
+</a>

@@ -11,15 +11,12 @@
   --color-ink-muted: rgb(244 247 247 / 0.7);
   --color-ink-faint: rgb(244 247 247 / 0.5);
   --color-accent: #587b82;
-  --color-accent-deep: #20292c;
   --color-status: #9bd8c4;
   --color-line: rgb(244 247 247 / 0.09);
   --color-line-strong: rgb(244 247 247 / 0.13);
   --color-soft: rgb(244 247 247 / 0.03);
 
   --radius-block: 1.5rem;
-  --radius-panel: 1rem;
-  --radius-glass: 0.875rem;
 
   --text-display: clamp(3.5rem, 6.3vw, 5.75rem);
   --text-display--line-height: 1.02;
@@ -136,14 +133,6 @@
       transform: translate3d(1.5rem, -1.125rem, 0);
     }
   }
-}
-
-/* ---------- Стекло для мокапов и скриншотов ---------- */
-@utility glass {
-  background: linear-gradient(180deg, rgb(244 247 247 / 0.08), rgb(244 247 247 / 0.02));
-  border: 0.0625rem solid var(--color-line-strong);
-  border-radius: var(--radius-glass);
-  box-shadow: 0 1rem 2.25rem rgb(0 0 0 / 0.4);
 }
 
 /* ---------- Анимации ----------
@@ -263,7 +252,7 @@ html.anim [data-reveal-words]:not(.is-ready) {
 .tilt {
   --x: 0;
   --y: 0;
-  transform: perspective(1100px) rotateX(calc(var(--y) * -7deg)) rotateY(calc(var(--x) * 7deg));
+  transform: perspective(68.75rem) rotateX(calc(var(--y) * -7deg)) rotateY(calc(var(--x) * 7deg));
   transition: transform 0.35s var(--ease-out);
 }
 .tilt::after {
@@ -278,6 +267,7 @@ html.anim [data-reveal-words]:not(.is-ready) {
     rgb(244 247 247 / 0.9),
     transparent 60%
   );
+  mask-composite: exclude;
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -291,10 +281,6 @@ html.anim [data-reveal-words]:not(.is-ready) {
 }
 .tilt.is-active::after {
   opacity: 1;
-}
-.tilt .glass {
-  transform: translate(calc(var(--x) * -14px), calc(var(--y) * -10px));
-  transition: transform 0.35s var(--ease-out);
 }
 
 /* Появление блоков при скролле: один раз, когда элемент доходит до экрана.

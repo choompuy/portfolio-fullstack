@@ -8,7 +8,6 @@ const attractions = shot('reactnative-attractionsguide', 'master', 'hero.png')
 
 export const projects: Project[] = [
   {
-    slug: 'eda-clone',
     title: 'Eda Clone',
     description:
       'Админ-панель и API-слой для сервиса доставки еды: ролевой доступ, дашборды с аналитикой, модификаторы товаров, загрузка изображений.',
@@ -25,7 +24,6 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: 'sitim-web',
     title: 'Sitim Web',
     description:
       'Frontend с входом по телефону: OTP, hCaptcha, сессии на Redux Toolkit и UI-компоненты на Tailwind v4.',
@@ -38,7 +36,6 @@ export const projects: Project[] = [
     layout: 'half',
   },
   {
-    slug: 'delivery-crm',
     title: 'Delivery CRM',
     description:
       'Frontend CRM-системы доставки на React и Inertia: корзина, чекаут и конфигуратор товаров с мобильной адаптацией.',
@@ -51,7 +48,6 @@ export const projects: Project[] = [
     layout: 'half',
   },
   {
-    slug: 'stream-queue',
     title: 'StreamQueue',
     description:
       'Self-hosted очередь заказов песен с YouTube для Twitch: заказ за баллы канала, фильтры, чёрный список и оверлей для OBS с панелью управления в браузере.',
@@ -68,7 +64,6 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: 'weather-dashboard',
     title: 'Weather Dashboard',
     description:
       'Погодный и экологический дашборд с расчётом AQI по EPA-логике и интерактивными графиками прогноза.',
@@ -81,12 +76,14 @@ export const projects: Project[] = [
     devices: {
       mac: { src: shot('vue-weather', 'main', 'dark.png') },
       phones: [
-        { src: shot('vue-weather', 'main', 'mobile.png'), bar: { top: '#2b2c30', bottom: '#2e3239' } },
+        {
+          src: shot('vue-weather', 'main', 'mobile.png'),
+          bar: { top: '#2b2c30', bottom: '#2e3239' },
+        },
       ],
     },
   },
   {
-    slug: 'projectpaper',
     title: 'ProjectPaper',
     description:
       'SaaS для управления проектами с real-time синхронизацией, системой ролей RBAC и двумя видами задач - Board/Table.',
@@ -108,7 +105,6 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: 'attractions-guide',
     title: 'Attractions Guide',
     description:
       'Мобильный гид по достопримечательностям: каталог с фильтрами, карта с кастомными маркерами, маршруты через Google Directions.',

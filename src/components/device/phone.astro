@@ -1,4 +1,5 @@
 ---
+import { IPHONE_RATIO, PHONE_BARS } from '../../lib/screen'
 import Wall from './wall.astro'
 
 interface Props {
@@ -11,6 +12,9 @@ interface Props {
 }
 
 const { top = '#000', bottom = '#000', empty = false } = Astro.props
+
+// Размеры полос заданы в долях ширины экрана, в CSS их удобно брать через cqw
+const sizes = `--ratio:${IPHONE_RATIO};--bar-top:${PHONE_BARS.top * 100}cqw;--bar-bottom:${PHONE_BARS.bottom * 100}cqw`
 ---
 
 <div class="phone">
@@ -18,7 +22,7 @@ const { top = '#000', bottom = '#000', empty = false } = Astro.props
     <div class="bezel">
       <div
         class="screen"
-        style={`--top:${empty ? 'transparent' : top};--bottom:${empty ? 'transparent' : bottom}`}
+        style={`${sizes};--top:${empty ? 'transparent' : top};--bottom:${empty ? 'transparent' : bottom}`}
       >
         {empty && <Wall />}
         <div class="status"><i class="island"></i></div>
@@ -78,7 +82,7 @@ const { top = '#000', bottom = '#000', empty = false } = Astro.props
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    aspect-ratio: 393 / 852;
+    aspect-ratio: var(--ratio);
     border-radius: 11.5cqw;
     background: #000;
   }
@@ -90,12 +94,12 @@ const { top = '#000', bottom = '#000', empty = false } = Astro.props
   }
 
   .status {
-    height: 12.5cqw;
+    height: var(--bar-top);
     background: var(--top);
   }
 
   .home {
-    height: 6.5cqw;
+    height: var(--bar-bottom);
     background: var(--bottom);
   }
 

@@ -20,43 +20,35 @@ const wide = project.layout === 'wide'
   >
     <Glow reveal="ignite" />
 
-    {
-      wide ? (
-        <>
-          <div class="absolute left-6 top-6 z-10 max-w-[calc(100%-3rem)]">
-            <ChipList items={project.stack} />
+    <div class="relative z-10 flex h-full flex-col gap-5 p-6">
+      <ChipList items={project.stack} />
+
+      <!-- Широкая карточка: текст слева, устройства справа. Остальные: устройства между чипами и датой -->
+      <div
+        class:list={wide
+          ? 'absolute top-12 right-10 bottom-10 hidden w-[42%] lg:block xl:w-[50%]'
+          : 'min-h-0 flex-1'}
+      >
+        <Devices devices={project.devices} title={project.title} hue={project.hue} />
+      </div>
+      {
+        wide && project.intro && (
+          <div class="absolute top-[58%] left-6 flex w-[calc(100%-3rem)] max-w-105 -translate-y-1/2 flex-col gap-6 md:top-1/2 md:left-12">
+            <p class="text-[2.75rem] leading-none tracking-[-0.03em] md:text-[4rem]">
+              {project.intro.title}
+            </p>
+            <p class="text-[1.375rem] leading-[1.2] tracking-[-0.01em] md:text-[1.75rem]">
+              {project.intro.lead}
+            </p>
           </div>
-          {project.intro && (
-            <div class="absolute left-6 top-[58%] z-10 w-[calc(100%-3rem)] max-w-105 -translate-y-1/2 md:left-12 md:top-1/2">
-              <p class="text-[2.75rem] leading-none tracking-[-0.03em] md:text-[4rem]">
-                {project.intro.title}
-              </p>
-              <p class="mt-6 text-[1.375rem] leading-[1.2] tracking-[-0.01em] md:text-[1.75rem]">
-                {project.intro.lead}
-              </p>
-            </div>
-          )}
-          <div class="absolute bottom-10 right-10 top-12 z-10 hidden w-[42%] lg:block xl:w-[50%]">
-            <Devices devices={project.devices} title={project.title} hue={project.hue} />
-          </div>
-          <div class="absolute inset-x-6 bottom-6 z-10 flex items-end justify-between">
-            <span class="text-xs text-ink-muted">{project.year}</span>
-            {project.note && <span class="text-xs text-ink-muted">{project.note}</span>}
-          </div>
-        </>
-      ) : (
-        <div class="relative z-10 flex h-full flex-col gap-5 p-6">
-          <ChipList items={project.stack} />
-          <div class="min-h-0 flex-1">
-            <Devices devices={project.devices} title={project.title} hue={project.hue} />
-          </div>
-          <div class="flex items-end justify-between">
-            <span class="text-xs text-ink-muted">{project.year}</span>
-            {project.note && <span class="text-xs text-ink-muted">{project.note}</span>}
-          </div>
-        </div>
-      )
-    }
+        )
+      }
+
+      <div class="mt-auto flex items-end justify-between text-xs text-ink-muted">
+        <span>{project.year}</span>
+        {project.note && <span>{project.note}</span>}
+      </div>
+    </div>
   </div>
 
   <div class="flex items-start justify-between gap-5 pb-4 pt-5">

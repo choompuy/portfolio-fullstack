@@ -1,45 +1,37 @@
 ---
 import { nav, site } from '../data/site'
 import Button from './button.astro'
-import NavPill from './nav-pill.astro'
 ---
 
 <!-- Пока этот сторож виден, шапка остаётся на обложке -->
 <span
   id="header-sentinel"
-  class="pointer-events-none absolute left-0 top-0 h-20 w-px"
-  aria-hidden="true"
->
-</span>
+  class="pointer-events-none absolute top-0 left-0 h-20 w-px"
+  aria-hidden="true"></span>
 
 <header
   id="site-header"
   data-state="top"
-  class="group/header pointer-events-none fixed inset-x-0 top-0 z-50 px-14 pt-14 data-ready:transition-[padding] data-ready:duration-600 data-ready:ease-out data-[state=docked]:px-4 data-[state=docked]:pt-3"
+  class="header fixed z-50 mx-auto flex items-center justify-between rounded-full border border-transparent"
 >
-  <div
-    class="pointer-events-auto relative mx-auto flex max-w-full items-center justify-between gap-4 rounded-full border border-transparent bg-page/0 shadow-[0_1rem_2.5rem_rgb(0_0_0/0)] backdrop-blur-none group-data-ready/header:transition-[max-width,padding,gap,background-color,border-color,box-shadow,backdrop-filter] group-data-ready/header:duration-600 group-data-ready/header:ease-out group-data-[state=docked]/header:max-w-208 group-data-[state=docked]/header:gap-6 group-data-[state=docked]/header:border-line-strong group-data-[state=docked]/header:bg-page/70 group-data-[state=docked]/header:p-1.5 group-data-[state=docked]/header:pl-2 group-data-[state=docked]/header:shadow-[0_1rem_2.5rem_rgb(0_0_0/0.45)] group-data-[state=docked]/header:backdrop-blur-xl"
+  <Button href="#top" variant="text" arrow={false} class="brand" data-in="drop" data-step="1">
+    {site.name}
+  </Button>
+  <nav
+    aria-label="Основная навигация"
+    class="absolute left-1/2 hidden -translate-x-1/2 gap-2 md:flex"
+    data-in="drop"
+    data-step="1"
   >
-    <Button
-      href="#top"
-      variant="text"
-      class="group-data-[state=top]/header:px-0! group-data-[state=docked]/header:max-sm:hidden group-data-ready/header:transition-[max-width,opacity] group-data-ready/header:duration-600 group-data-ready/header:ease-out group-data-[state=docked]/header:max-sm:max-w-0 group-data-[state=docked]/header:max-sm:opacity-0"
-      data-in="drop"
-      data-step="1"
-      arrow={false}
-    >
-      {site.name}
-    </Button>
-    <nav
-      aria-label="Основная навигация"
-      class="absolute left-1/2 hidden -translate-x-1/2 gap-2 md:flex"
-      data-in="drop"
-      data-step="1"
-    >
-      {nav.map((item) => <NavPill href={item.href}>{item.label}</NavPill>)}
-    </nav>
-    <Button href="#contacts" variant="primary" data-in="drop" data-step="2">Связаться</Button>
-  </div>
+    {
+      nav.map((item) => (
+        <Button href={item.href} arrow={false}>
+          {item.label}
+        </Button>
+      ))
+    }
+  </nav>
+  <Button href="#contacts" variant="primary" data-in="drop" data-step="2">Связаться</Button>
 </header>
 
 <script>
@@ -47,3 +39,52 @@ import NavPill from './nav-pill.astro'
 
   siteHeader('#site-header', '#header-sentinel')
 </script>
+
+<style>
+  /* На обложке: на ширину обложки, без фона. Отступы те же, что у hero (px-6 + px-8, pt-6 + py-8) */
+  .header {
+    top: 3.5rem;
+    inset-inline: 3.5rem;
+    max-width: 100%;
+    gap: 1rem;
+    background-color: transparent;
+    box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 0);
+    backdrop-filter: blur(0);
+  }
+
+  .header :global(.brand) {
+    padding-inline: 0;
+  }
+
+  /* Плашка: узкая, по центру, с фоном и размытием */
+  .header[data-state='docked'] {
+    top: 0.75rem;
+    inset-inline: 1rem;
+    max-width: 52rem;
+    gap: 1.5rem;
+    padding: 0.375rem 0.375rem 0.375rem 0.5rem;
+    border-color: var(--color-line-strong);
+    background-color: color-mix(in srgb, var(--color-page) 70%, transparent);
+    box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 0.45);
+    backdrop-filter: blur(1.25rem);
+  }
+
+  .header[data-state='docked'] :global(.brand) {
+    padding-inline: 1.5rem 0;
+  }
+
+  /* Переходы включает data-ready, чтобы шапка не анимировалась при загрузке страницы */
+  .header[data-ready] {
+    transition-property:
+      top, inset-inline, max-width, gap, padding, background-color, border-color, box-shadow,
+      backdrop-filter;
+    transition-duration: 0.6s;
+    transition-timing-function: var(--ease-out);
+  }
+
+  .header[data-ready] :global(.brand) {
+    transition:
+      padding-inline 0.6s var(--ease-out),
+      color 0.2s;
+  }
+</style>
