@@ -35,11 +35,13 @@ precision highp float;
 precision mediump float;
 #endif
 uniform vec2 uRes;uniform float uT,uMode,uRev,uRM;uniform vec3 uBg,uC[4];
-float h(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float h(vec2 p){vec3 q=fract(vec3(p.xyx)*.1031);q+=dot(q,q.yzx+33.33);return fract((q.x+q.y)*q.z);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+1.),f.x),f.y);}
-float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<3;i++){v+=a*n(p);p=p*2.03+7.1;a*=.5;}return v;}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<3;i++){v+=a*n(p);p=mat2(1.6,1.2,-1.2,1.6)*p+7.1;a*=.5;}return v;}
 void main(){
-  vec2 uv=gl_FragCoord.xy/uRes;float as=uRes.x/uRes.y;vec2 p=(uv-.5)*vec2(as,1.);float t=uT;
+  vec2 uv=gl_FragCoord.xy/uRes;float as=uRes.x/uRes.y;
+  // масштаб по короткой стороне: на узком вертикальном экране облака не разрастаются
+  vec2 ext=vec2(as,1.)/min(as,1.);vec2 p=(uv-.5)*ext;float t=uT;
   vec3 c=uBg;
   if(uMode>.5){
     // aurora: облако на весь блок, без отдельных кругов
@@ -54,12 +56,12 @@ void main(){
     p+=(w-.5)*.2;
     vec3 col=vec3(0.);
     for(int i=0;i<3;i++){float fi=float(i);
-      vec2 b=vec2(sin(t*.23+fi*2.1)*.36*as,cos(t*.17+fi*2.7)*.3);
+      vec2 b=vec2(sin(t*.23+fi*2.1)*.36*ext.x,cos(t*.17+fi*2.7)*.3*ext.y);
       float d=length(p-b);col+=uC[i]*exp(-d*d*8.);}
     c+=(1.-exp(-col*.7))*.5;
   }
   // появление: маска доходит до всех краёв, когда uRev = 1
-  float m=1.;float nz=fbm(uv*vec2(as,1.)*1.8+3.);
+  float m=1.;float nz=fbm(uv*ext*1.8+3.);
   if(uRM>1.5){float d=length((uv-.5)*2.)/1.4142+(nz-.5)*.35;float e=uRev*2.5-.5;m=1.-smoothstep(e-.6,e,d);}
   else if(uRM>.5){m=smoothstep(nz-.25,nz+.25,uRev*1.5-.25);}
   gl_FragColor=vec4(mix(uBg,c,m),1.);

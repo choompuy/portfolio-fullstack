@@ -124,12 +124,12 @@ export const projects: Project[] = [
         },
         {
           src: attractions,
-          sheet: { index: 1, panels: 4 },
+          sheet: { index: 2, panels: 4 },
           bar: { top: '#fefcf4', bottom: '#fefcf4' },
         },
         {
           src: attractions,
-          sheet: { index: 2, panels: 4 },
+          sheet: { index: 1, panels: 4 },
           bar: { top: '#efeff0', bottom: '#eaecda' },
         },
       ],
