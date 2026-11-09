@@ -19,8 +19,14 @@ import SiteHeader from '../components/site-header.astro'
     <meta name="theme-color" content="#111111" />
     <Font cssVariable="--font-inter" preload />
     <script is:inline>
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.classList.add('anim')
+      {
+        const root = document.documentElement
+        // js: градиент рисует скрипт, поэтому запасное CSS-свечение скрыто и не мелькает перед ним
+        root.classList.add('js')
+        // anim: анимации появления, только если не просили уменьшить движение
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          root.classList.add('anim')
+        }
       }
     </script>
     <meta name="generator" content={Astro.generator} />

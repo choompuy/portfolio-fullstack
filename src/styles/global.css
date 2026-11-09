@@ -351,8 +351,8 @@ html.anim [data-chips].is-in > li {
 }
 .glow.is-gl::before,
 .glow.is-gl::after,
-html.anim .glow:not(.glow--fallback)::before,
-html.anim .glow:not(.glow--fallback)::after {
+html.js .glow:not(.glow--fallback)::before,
+html.js .glow:not(.glow--fallback)::after {
   display: none;
 }
 
@@ -389,6 +389,6 @@ html.anim [data-ignite] {
 }
 
 /* Пока градиент не начал появляться, зерно скрыто (--rev задаёт gradient.ts) */
-html.anim .glow:not(.glow--fallback) {
+html.js .glow:not(.glow--fallback) {
   --rev: 0;
 }
