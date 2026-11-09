@@ -41,12 +41,10 @@ import SiteHeader from '../components/site-header.astro'
     </main>
     <script>
       import { initGradients } from '../scripts/gradient'
-      import { reveal } from '../scripts/reveal'
-      import { revealWords } from '../scripts/reveal-words'
+      import { initMotion } from '../scripts/motion'
 
       initGradients()
-      reveal()
-      revealWords('[data-reveal-words]')
+      initMotion()
     </script>
   </body>
 </html>

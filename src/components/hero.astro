@@ -19,7 +19,7 @@ import Glow from './glow.astro'
       <div class="mt-20 lg:mt-24">
         <p
           class="inline-flex items-center gap-2 rounded-full border border-line bg-soft py-1.75 pl-3 pr-3.5 text-[13px]"
-          data-in="drop"
+          data-intro="focus"
           data-step="3"
         >
           <span aria-hidden="true" class="status-dot size-1.75 rounded-full bg-status"></span>
@@ -29,11 +29,9 @@ import Glow from './glow.astro'
           {site.role}
         </h1>
         <div class="mt-10 max-w-140 lg:ml-[28%]">
-          <div class="overflow-hidden pb-1">
-            <p class="text-lg leading-snug" data-in="up" data-step="4">{site.tagline}</p>
-          </div>
+          <p class="text-lg leading-snug" data-intro="emerge" data-step="4">{site.tagline}</p>
           <div class="mt-10">
-            <Button href="#projects" data-in="fade" data-step="5">Смотреть проекты</Button>
+            <Button href="#projects" data-intro="focus" data-step="5">Смотреть проекты</Button>
           </div>
         </div>
       </div>
@@ -41,7 +39,7 @@ import Glow from './glow.astro'
       <!-- Tech card -->
       <aside
         class="mt-10 rounded-[1.25rem] bg-card p-5 lg:absolute lg:bottom-8 lg:right-8 lg:mt-0 lg:w-71"
-        data-in="fade"
+        data-intro="emerge"
         data-step="6"
       >
         <h2 class="text-xs font-medium uppercase tracking-[0.08em]">{site.techCard.title}</h2>

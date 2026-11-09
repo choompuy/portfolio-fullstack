@@ -135,43 +135,99 @@
 }
 
 /* ---------- Анимации ----------
-   Начальное скрытое состояние включается только классом html.anim.
-   Его ставит инлайн-скрипт в <head>, и только если пользователь не просил
-   уменьшить движение. Без JS или с reduce-motion весь контент виден сразу. */
+   Скрытое начальное состояние включается только классом html.anim: его ставит инлайн-скрипт
+   в <head>, и только если пользователь не просил уменьшить движение. Без JS или с reduce-motion
+   всё видно сразу.
+
+   Набор небольшой, а схемы чередуются, чтобы одна и та же не шла подряд:
+   - emerge: всплытие, элемент выплывает вперёд с лёгким 3D-наклоном и малым размытием;
+   - focus: из расфокуса, размытие уходит, элемент чуть сжимается до обычного размера;
+   - слова (.st-word): растворение вразнобой или от центра, для крупного текста;
+   - чипы: выскакивают по очереди с лёгким перелётом;
+   - ignite: разгорание заголовка обложки от центра (единственная в своём роде).
+   Крупные блоки (карточки, картинки, названия и описания проектов) не анимируются: они и так
+   на виду. Размытие небольшое и идёт мелкими ступенями: на глаз гладко, а пересчётов в разы
+   меньше, чем при плавном блюре. Двигаются только прозрачность и transform, они идут на GPU. */
 :root {
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@keyframes in-drop {
+[data-fx='emerge'],
+[data-intro='emerge'] {
+  --from-t: perspective(56rem) translate3d(0, 0.75rem, -3rem) rotateX(8deg);
+  --from-f: blur(0.375rem);
+}
+[data-fx='focus'],
+[data-intro='focus'] {
+  --from-t: scale(1.06);
+  --from-f: blur(0.5rem);
+}
+
+/* При скролле: скрипт motion.ts назначает data-fx и добавляет .is-in.
+   --d - задержка элемента в группе (мс) */
+html.anim [data-reveal] {
+  opacity: 0;
+}
+html.anim [data-fx] {
+  filter: var(--from-f);
+  transform: var(--from-t);
+}
+html.anim [data-reveal].is-in {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition:
+    opacity 0.4s var(--ease-out) var(--d, 0s),
+    transform 0.6s var(--ease-out) var(--d, 0s),
+    filter 0.4s steps(10) var(--d, 0s);
+}
+
+/* При загрузке (обложка и шапка): те же схемы, порядок задаёт data-step.
+   fill-mode backwards: до старта элемент скрыт, а после анимации стили сами возвращаются к обычным */
+@keyframes fx-move {
   from {
     opacity: 0;
-    transform: translateY(-0.875rem);
+    transform: var(--from-t);
   }
   to {
     opacity: 1;
     transform: none;
   }
 }
-@keyframes in-fade {
+@keyframes fx-blur {
   from {
-    opacity: 0;
-    transform: translateY(0.75rem);
+    filter: var(--from-f);
   }
   to {
-    opacity: 1;
-    transform: none;
+    filter: none;
   }
 }
-@keyframes in-up {
-  from {
-    opacity: 0;
-    transform: translateY(105%);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+html.anim [data-intro] {
+  animation:
+    fx-move 0.9s var(--ease-out) var(--delay, 0s) backwards,
+    fx-blur 0.9s steps(10) var(--delay, 0s) backwards;
 }
+/* Порядок на обложке: шапка, статус, заголовок (разгорание, см. ниже), текст, кнопка, карточка.
+   Всё укладывается примерно в полторы секунды и идёт почти сразу за статусом. */
+[data-step='1'] {
+  --delay: 0.05s;
+}
+[data-step='2'] {
+  --delay: 0.1s;
+}
+[data-step='3'] {
+  --delay: 0.2s;
+}
+[data-step='4'] {
+  --delay: 0.45s;
+}
+[data-step='5'] {
+  --delay: 0.55s;
+}
+[data-step='6'] {
+  --delay: 0.65s;
+}
+
 @keyframes status-ping {
   from {
     transform: scale(1);
@@ -181,37 +237,6 @@
     transform: scale(3.2);
     opacity: 0;
   }
-}
-
-html.anim [data-in] {
-  opacity: 0;
-  animation: in-fade 0.8s var(--ease-out) both;
-}
-html.anim [data-in='drop'] {
-  animation-name: in-drop;
-}
-html.anim [data-in='up'] {
-  animation-name: in-up;
-}
-/* Порядок появления на обложке: меню, статус, заголовок (0.3 с), текст, кнопка, карточка.
-   Всё укладывается примерно в полторы секунды и идёт почти сразу за статусом. */
-html.anim [data-step='1'] {
-  animation-delay: 0.05s;
-}
-html.anim [data-step='2'] {
-  animation-delay: 0.1s;
-}
-html.anim [data-step='3'] {
-  animation-delay: 0.2s;
-}
-html.anim [data-step='4'] {
-  animation-delay: 0.45s;
-}
-html.anim [data-step='5'] {
-  animation-delay: 0.55s;
-}
-html.anim [data-step='6'] {
-  animation-delay: 0.65s;
 }
 
 /* Пульс у статуса «Открыт к предложениям» */
@@ -227,9 +252,8 @@ html.anim [data-step='6'] {
   animation: status-ping 2.4s ease-out infinite;
 }
 
-/* Текст, слова которого проявляются один раз, когда блок доходит до экрана.
-   Скрипт reveal-words.ts оборачивает слова (--i - номер слова) и добавляет блоку .is-in.
-   Шаг между словами 35 мс: чтобы текст появился разом, поставьте 0ms. */
+/* Слова крупного текста проявляются один раз, когда блок доходит до экрана.
+   Скрипт motion.ts оборачивает слова (--i - ранг слова, --d - задержка блока) и добавляет блоку .is-in. */
 html.anim [data-reveal-words]:not(.is-ready) {
   opacity: 0;
 }
@@ -244,12 +268,32 @@ html.anim [data-reveal-words]:not(.is-ready) {
   filter: none;
   transform: none;
   transition:
-    opacity 1s var(--ease-out) calc(var(--i) * 45ms),
-    transform 1s var(--ease-out) calc(var(--i) * 45ms),
-    filter 1s steps(12) calc(var(--i) * 45ms);
+    opacity 1s var(--ease-out) calc(var(--d, 0ms) + var(--i) * 45ms),
+    transform 1s var(--ease-out) calc(var(--d, 0ms) + var(--i) * 45ms),
+    filter 1s steps(12) calc(var(--d, 0ms) + var(--i) * 45ms);
 }
 .is-hot .st-word {
   will-change: opacity, transform, filter;
+}
+
+/* Чипы выскакивают по очереди: лёгкий перелёт по масштабу и малое размытие ступенями.
+   Скрипт motion.ts добавляет списку .is-in, --i - номер чипа, --base - общая задержка. */
+html.anim [data-chips] > li {
+  opacity: 0;
+  filter: blur(0.3rem);
+  transform: scale(0.82) translateY(0.25rem);
+}
+html.anim [data-chips].is-in > li {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease-out) calc(var(--base, 0ms) + var(--i) * 50ms),
+    filter 0.7s steps(8) calc(var(--base, 0ms) + var(--i) * 50ms),
+    transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--base, 0ms) + var(--i) * 50ms);
+}
+[data-chips-priority] {
+  --base: 750ms;
 }
 
 /* Наклон карточки проекта, светящийся контур и сдвиг скриншота на другой глубине.
@@ -286,43 +330,6 @@ html.anim [data-reveal-words]:not(.is-ready) {
 }
 .tilt.is-active::after {
   opacity: 1;
-}
-
-/* Появление блоков при скролле: один раз, когда элемент доходит до экрана.
-   Скрипт reveal.ts добавляет .is-in и задаёт задержку --d для элементов, вошедших вместе.
-   data-reveal - текст (с лёгким размытием), data-reveal="block" - большие блоки без размытия. */
-html.anim [data-reveal] {
-  opacity: 0;
-  filter: blur(0.375rem);
-  transform: translateY(0.625rem);
-}
-html.anim [data-reveal].is-in {
-  opacity: 1;
-  filter: none;
-  transform: none;
-  transition:
-    opacity 0.9s var(--ease-out) var(--d, 0s),
-    filter 0.9s var(--ease-out) var(--d, 0s),
-    transform 0.9s var(--ease-out) var(--d, 0s);
-}
-/* Чипы выскакивают по очереди: лёгкий перелёт по масштабу и малое размытие ступенями.
-   Скрипт reveal.ts добавляет списку .is-in, --i - номер чипа, --base - общая задержка. */
-html.anim [data-chips] > li {
-  opacity: 0;
-  filter: blur(0.3rem);
-  transform: scale(0.82) translateY(0.25rem);
-}
-html.anim [data-chips].is-in > li {
-  opacity: 1;
-  filter: none;
-  transform: none;
-  transition:
-    opacity 0.7s var(--ease-out) calc(var(--base, 0ms) + var(--i) * 50ms),
-    filter 0.7s steps(8) calc(var(--base, 0ms) + var(--i) * 50ms),
-    transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--base, 0ms) + var(--i) * 50ms);
-}
-[data-chips-priority] {
-  --base: 750ms;
 }
 
 /* ---------- WebGL-градиент ----------
@@ -378,7 +385,7 @@ html.anim [data-ignite] {
     #000 var(--r),
     transparent calc(var(--r) + 40%)
   );
-  animation: ignite-text 2.6s cubic-bezier(0.45, 0, 0.2, 1) backwards;
+  animation: ignite-text 1.6s var(--ease-out) 0.25s backwards;
 }
 
 /* Пока градиент не начал появляться, зерно скрыто (--rev задаёт gradient.ts) */

@@ -14,13 +14,13 @@ import Button from './button.astro'
   data-state="top"
   class="header fixed z-50 mx-auto flex items-center justify-between rounded-full border border-transparent"
 >
-  <Button href="#top" variant="text" arrow={false} class="brand" data-in="drop" data-step="1">
+  <Button href="#top" variant="text" arrow={false} class="brand" data-intro="focus" data-step="1">
     {site.name}
   </Button>
   <nav
     aria-label="Основная навигация"
     class="absolute left-1/2 hidden -translate-x-1/2 gap-2 md:flex"
-    data-in="drop"
+    data-intro="focus"
     data-step="1"
   >
     {
@@ -31,7 +31,7 @@ import Button from './button.astro'
       ))
     }
   </nav>
-  <Button href="#contacts" variant="primary" data-in="drop" data-step="2">Связаться</Button>
+  <Button href="#contacts" variant="primary" data-intro="focus" data-step="2">Связаться</Button>
 </header>
 
 <script>

@@ -11,16 +11,16 @@ import ChipList from './chip-list.astro'
       <div class="lg:col-span-4">
         <h2
           class="text-[clamp(2rem,3.6vw,3.25rem)] font-normal leading-[1.08] tracking-[-0.02em]"
-          data-reveal-words
+          data-reveal-words="ignite"
         >
           {site.skills.titleLines.map((line) => <span class="block">{line}</span>)}
         </h2>
       </div>
-      <ul class="lg:col-span-8 space-y-6 divide-y divide-line" data-reveal-group>
+      <ul class="lg:col-span-8 space-y-6 divide-y divide-line">
         {
           skills.map((group) => (
             <li class="pb-6 last:pb-0">
-              <h3 class="text-case font-normal">{group.name}</h3>
+              <h3 class="text-case font-normal" data-reveal>{group.name}</h3>
               <ChipList items={group.items} size="md" class="mt-4" />
             </li>
           ))
