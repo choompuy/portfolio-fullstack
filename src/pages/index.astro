@@ -1,4 +1,5 @@
 ---
+import { Font } from 'astro:assets'
 import '../styles/global.css'
 import Hero from '../components/hero.astro'
 import About from '../components/about.astro'
@@ -13,7 +14,10 @@ import SiteHeader from '../components/site-header.astro'
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#111111" />
+    <Font cssVariable="--font-inter" preload />
     <script is:inline>
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('anim')
@@ -23,7 +27,7 @@ import SiteHeader from '../components/site-header.astro'
     <title>Васильев Айхал - Fullstack Developer</title>
     <meta
       name="description"
-      content="Fullstack-разработчик. Создаю сложные, современные и удобные интерфейсы."
+      content="Fullstack-разработчик на TypeScript: схема БД, API и интерфейс. Админки, дашборды и сервисы доставки."
     />
   </head>
   <body class="min-h-screen">

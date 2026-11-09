@@ -7,14 +7,14 @@ export const skills: SkillGroup[] = [
   },
   {
     name: 'Архитектура',
-    items: ['Feature-Sliced Design', 'RBAC', 'Слой API', 'RTK Query', 'Zod'],
+    items: ['Схема БД и RLS', 'REST API', 'RBAC', 'Feature-Sliced Design', 'Zod'],
   },
   {
     name: 'Оптимизация',
-    items: ['WebP через Sharp', 'Suspense', 'SQL RPC', 'Lazy loading'],
+    items: ['WebP через Sharp', 'SQL RPC', 'Suspense', 'Lazy loading', 'Кэш ответов'],
   },
   {
     name: 'Стек',
-    items: ['React 19', 'Next.js', 'Vue 3', 'TypeScript', 'Supabase', 'Firebase'],
+    items: ['TypeScript', 'React', 'Next.js', 'Vue 3', 'Node.js', 'Express', 'PostgreSQL', 'Supabase'],
   },
 ]

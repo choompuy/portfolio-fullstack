@@ -12,6 +12,7 @@ interface Props {
 
 const { project, number } = Astro.props
 const wide = project.layout === 'wide'
+const link = project.demo ?? project.href
 ---
 
 <article>
@@ -59,7 +60,7 @@ const wide = project.layout === 'wide'
         {project.description}
       </p>
     </div>
-    <ArrowButton label={`Открыть проект ${project.title}`} href={project.demo ?? project.href} />
+    {link && <ArrowButton label={`Открыть проект ${project.title}`} href={link} />}
   </div>
 </article>
 

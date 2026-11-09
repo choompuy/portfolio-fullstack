@@ -10,8 +10,8 @@ export const projects: Project[] = [
   {
     title: 'Eda Clone',
     description:
-      'Админ-панель и API-слой для сервиса доставки еды: ролевой доступ, дашборды с аналитикой, модификаторы товаров, загрузка изображений.',
-    stack: ['Next.js', 'Supabase', 'TypeScript', 'TanStack Table', 'Recharts'],
+      'Админ-панель, API и схема PostgreSQL для сервиса доставки еды: роли и RLS, дашборды на SQL-функциях, модификаторы товаров, загрузка изображений.',
+    stack: ['Next.js', 'Supabase', 'PostgreSQL', 'TypeScript', 'Recharts'],
     year: '2026',
     hue: '#8a5a4a',
     devices: { mac: {} },
@@ -19,7 +19,7 @@ export const projects: Project[] = [
     layout: 'wide',
     intro: {
       title: 'Eda Clone',
-      lead: 'Админ-панель и API для доставки еды',
+      lead: 'Схема БД, API и админка для доставки еды',
     },
   },
   {
@@ -47,7 +47,7 @@ export const projects: Project[] = [
   {
     title: 'StreamQueue',
     description:
-      'Self-hosted очередь заказов песен с YouTube для Twitch: заказ за баллы канала, фильтры, чёрный список и оверлей для OBS с панелью управления в браузере.',
+      'Node.js сервис на Express 5: заказ треков за баллы канала Twitch, поиск и проверка на YouTube, живая очередь в панели через SSE и оверлей для OBS.',
     stack: ['Node.js', 'TypeScript', 'Express', 'SSE', 'Twitch API'],
     year: '2026',
     hue: '#6e5b9a',

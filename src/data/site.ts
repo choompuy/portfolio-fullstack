@@ -16,16 +16,16 @@ export const site = {
   name: 'Васильев Айхал',
   role: 'Fullstack Developer',
   tagline:
-    'Делаю интерфейсы на React и Next.js: админки, дашборды, корзины и формы для сервисов доставки',
+    'Беру фичу целиком: от схемы БД и API до интерфейса. Делаю админки, дашборды и сервисы доставки',
   status: 'Открыт к предложениям',
   techCard: {
     title: 'Технологии',
-    chips: ['React', 'Next.js', 'Vue 3', 'TypeScript', 'Firebase', 'Supabase'],
+    chips: ['TypeScript', 'React', 'Next.js', 'Node.js', 'PostgreSQL', 'Supabase'],
   },
   about: {
     label: 'Обо мне',
     leadBase: 'Привет, я Айхал.',
-    leadAccent: ' Делаю фронтенд на React, Next.js и Vue и сам подключаю его к API.',
+    leadAccent: ' Проектирую базу и API и делаю интерфейс на React и Next.js.',
     metrics: [
       {
         value: String(commercial),
@@ -39,7 +39,7 @@ export const site = {
         value: String(personal),
         caption: plural(personal, ['личный проект', 'личных проекта', 'личных проектов']),
       },
-      { value: 'React 19', caption: 'и Next.js 16 в рабочем стеке' },
+      { value: '24', caption: 'RLS-политики в схеме на 12 таблиц' },
     ],
   },
   skills: {
