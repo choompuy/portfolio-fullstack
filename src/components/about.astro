@@ -5,26 +5,23 @@ import Container from './container.astro'
 const { about } = site
 ---
 
-<section id="about" class="py-28">
+<section id="about" class="py-section">
   <Container>
-    <div class="grid gap-y-10 lg:grid-cols-12 lg:gap-x-6">
-      <h2
-        class="text-xs font-medium uppercase tracking-[0.08em] text-ink-faint lg:col-span-3"
-        data-reveal
-      >
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-x-6">
+      <h2 class="eyebrow text-ink-faint lg:col-span-3" data-reveal>
         {about.label}
       </h2>
-      <div class="lg:col-span-9">
+      <div class="flex flex-col gap-10 sm:gap-14 lg:col-span-9">
         <p class="max-w-225 text-lead font-normal" data-reveal-words>
           <span>{about.leadBase}</span>
           <span class="text-accent">{about.leadAccent}</span>
         </p>
-        <dl class="mt-14 flex flex-wrap gap-x-16 gap-y-8 pt-7" data-reveal-group>
+        <dl class="flex flex-wrap gap-x-10 gap-y-6 sm:gap-x-16 sm:gap-y-8" data-reveal-group>
           {
             about.metrics.map((metric) => (
               <div class="flex flex-col-reverse gap-2" data-reveal>
                 <dd class="text-[13px] text-ink-muted">{metric.caption}</dd>
-                <dt class="text-metric tracking-[-0.03em]">{metric.value}</dt>
+                <dt class="text-metric tracking-heading">{metric.value}</dt>
               </div>
             ))
           }

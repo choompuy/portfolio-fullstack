@@ -5,45 +5,43 @@ import ChipList from './chip-list.astro'
 import Glow from './glow.astro'
 ---
 
-<div class="px-6 pt-6" id="top">
+<div class="px-frame pt-frame" id="top">
   <section
     class="relative isolate overflow-hidden rounded-block bg-page"
     style="--hue: var(--color-accent)"
   >
     <Glow size="lg" drift variant="aurora" priority />
-    <div class="relative z-10 flex min-h-152 flex-col px-8 py-8">
-      <!-- Место под шапку: сама шапка стоит поверх обложки, см. site-header.astro -->
-      <div class="h-11" aria-hidden="true"></div>
+    <div class="relative z-10 flex min-h-152 flex-col gap-10 p-inset">
+      <div class="h-11 shrink-0 sm:h-21 lg:h-25" aria-hidden="true"></div>
 
       <!-- Hero content -->
-      <div class="mt-20 lg:mt-24">
-        <p
-          class="inline-flex items-center gap-2 rounded-full border border-line bg-soft py-1.75 pl-3 pr-3.5 text-[13px]"
-          data-intro="focus"
-          data-step="3"
-        >
-          <span aria-hidden="true" class="status-dot size-1.75 rounded-full bg-status"></span>
-          {site.status}
-        </p>
-        <h1 class="mt-5 w-fit text-display font-normal tracking-[-0.03em]" data-ignite>
-          {site.role}
-        </h1>
-        <div class="mt-10 max-w-140 lg:ml-[28%]">
+      <div class="flex flex-col gap-10">
+        <div class="flex flex-col items-start gap-5">
+          <p class="pill" data-intro="focus" data-step="3">
+            <span aria-hidden="true" class="status-dot size-1.75 rounded-full bg-status"></span>
+            {site.status}
+          </p>
+          <h1 class="w-fit text-display font-normal tracking-heading" data-ignite>
+            {site.role}
+          </h1>
+        </div>
+        <div class="flex max-w-140 flex-col items-start gap-10 lg:ml-[28%]">
           <p class="text-lg leading-snug" data-intro="emerge" data-step="4">{site.tagline}</p>
-          <div class="mt-10">
-            <Button href="#projects" data-intro="focus" data-step="5">Смотреть проекты</Button>
-          </div>
+          <Button href="#projects" data-intro="focus" data-step="5">Смотреть проекты</Button>
         </div>
       </div>
 
       <!-- Tech card -->
       <aside
-        class="mt-10 rounded-[1.25rem] bg-card p-5 lg:absolute lg:bottom-8 lg:right-8 lg:mt-0 lg:w-71"
+        class:list={[
+          'flex flex-col gap-5 rounded-panel bg-card p-5',
+          'lg:absolute lg:right-inset lg:bottom-inset lg:w-71',
+        ]}
         data-intro="emerge"
         data-step="6"
       >
-        <h2 class="text-xs font-medium uppercase tracking-[0.08em]">{site.techCard.title}</h2>
-        <ChipList items={site.techCard.chips} class="mt-5" priority />
+        <h2 class="eyebrow">{site.techCard.title}</h2>
+        <ChipList items={site.techCard.chips} priority />
       </aside>
     </div>
   </section>

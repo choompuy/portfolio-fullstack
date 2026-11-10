@@ -7,20 +7,20 @@ import ArrowIcon from './arrow-icon.astro'
 const { contacts } = site
 ---
 
-<div id="contacts" class="px-6 pb-6">
+<div id="contacts" class="px-frame pb-frame">
   <section
     class="relative isolate overflow-hidden rounded-block bg-page"
     style="--hue: var(--color-accent)"
   >
     <Glow size="lg" variant="aurora" />
-    <div class="relative z-10 flex min-h-[17.3rem] flex-col justify-between gap-16 px-8 py-8">
-      <h2 class="text-xs font-medium uppercase tracking-[0.08em] text-ink-muted" data-reveal>
+    <div class="relative z-10 flex min-h-69 flex-col justify-between gap-10 p-inset sm:gap-16">
+      <h2 class="eyebrow text-ink-muted" data-reveal>
         {contacts.label}
       </h2>
       <div class="flex flex-wrap items-center justify-between gap-6">
         <a
           href={`mailto:${contacts.email}`}
-          class="inline-flex items-center gap-3 text-[clamp(1.125rem,5vw,2.5rem)] tracking-[-0.02em]"
+          class="inline-flex items-center gap-3 text-email tracking-title"
           data-reveal
         >
           {contacts.email}
@@ -37,7 +37,10 @@ const { contacts } = site
         </div>
       </div>
       <div
-        class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-line pt-4 text-xs text-ink-muted"
+        class:list={[
+          'flex flex-wrap items-center justify-between gap-x-6 gap-y-2',
+          'border-t border-line pt-4 text-xs text-ink-muted',
+        ]}
         data-reveal
       >
         <span>

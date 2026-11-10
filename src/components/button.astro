@@ -23,6 +23,9 @@ const variants = {
   ghost: 'border border-line-strong bg-soft hover:bg-ink/10',
   text: 'text-ink-muted hover:text-ink',
 }
+
+const arrowMotion =
+  'transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5'
 ---
 
 <a
@@ -30,7 +33,7 @@ const variants = {
   target={external ? '_blank' : undefined}
   rel={external ? 'noreferrer' : undefined}
   class:list={[
-    'group/btn inline-flex h-11 items-center gap-2.5 rounded-full px-6 text-base leading-none font-medium whitespace-nowrap transition-colors duration-200',
+    'btn group/btn',
     variants[variant],
     className,
   ]}
@@ -39,7 +42,7 @@ const variants = {
   <slot />
   {
     arrow && (
-      <ArrowIcon class="transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+      <ArrowIcon class={arrowMotion} />
     )
   }
 </a>

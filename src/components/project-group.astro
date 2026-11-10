@@ -33,7 +33,7 @@ function toRows(items: Project[]) {
 const rows = toRows(items)
 ---
 
-<div class="flex flex-col gap-14">
+<div class="flex flex-col gap-10 sm:gap-14">
   <SectionLabel label={label} count={String(items.length).padStart(2, '0')} />
   {
     rows.map((row) => (

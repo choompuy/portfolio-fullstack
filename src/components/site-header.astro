@@ -41,10 +41,10 @@ import Button from './button.astro'
 </script>
 
 <style>
-  /* На обложке: на ширину обложки, без фона. Отступы те же, что у hero (px-6 + px-8, pt-6 + py-8) */
+  /* На обложке: на ширину обложки, без фона. Отступы те же, что у hero: поле frame плюс отступ inset */
   .header {
-    top: 3.5rem;
-    inset-inline: 3.5rem;
+    top: calc(var(--spacing-frame) + var(--spacing-inset));
+    inset-inline: calc(var(--spacing-frame) + var(--spacing-inset));
     max-width: 100%;
     gap: 1rem;
     background-color: transparent;

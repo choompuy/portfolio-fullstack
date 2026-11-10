@@ -5,23 +5,20 @@ import Container from './container.astro'
 import ChipList from './chip-list.astro'
 ---
 
-<section id="skills" class="py-28">
+<section id="skills" class="py-section">
   <Container>
-    <div class="grid gap-12 lg:grid-cols-12 lg:gap-x-6">
+    <div class="grid gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-x-6">
       <div class="lg:col-span-4">
-        <h2
-          class="text-[clamp(2rem,3.6vw,3.25rem)] font-normal leading-[1.08] tracking-[-0.02em]"
-          data-reveal-words="ignite"
-        >
+        <h2 class="text-section font-normal tracking-title" data-reveal-words="ignite">
           {site.skills.titleLines.map((line) => <span class="block">{line}</span>)}
         </h2>
       </div>
-      <ul class="lg:col-span-8 space-y-6 divide-y divide-line">
+      <ul class="flex flex-col gap-6 divide-y divide-line lg:col-span-8">
         {
           skills.map((group) => (
-            <li class="pb-6 last:pb-0">
+            <li class="flex flex-col gap-4 pb-6 last:pb-0">
               <h3 class="text-case font-normal" data-reveal>{group.name}</h3>
-              <ChipList items={group.items} size="md" class="mt-4" />
+              <ChipList items={group.items} size="md" />
             </li>
           ))
         }
