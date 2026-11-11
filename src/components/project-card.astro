@@ -17,7 +17,10 @@ const link = project.demo ?? project.href
 
 <article class="flex flex-col gap-5">
   <div
-    class="tilt relative isolate h-96 overflow-hidden rounded-block bg-page sm:h-105"
+    class:list={[
+      'tilt relative isolate overflow-hidden rounded-block bg-page',
+      wide ? 'lg:h-105' : 'h-96 sm:h-105',
+    ]}
     style={`--hue: ${project.hue}`}
   >
     <Glow reveal="ignite" />
@@ -25,20 +28,15 @@ const link = project.demo ?? project.href
     <div class="relative z-10 flex h-full flex-col gap-5 p-5 sm:p-6">
       <ChipList items={project.stack} />
 
-      <!-- Широкая карточка: текст слева, устройства справа. Остальные: устройства между чипами и датой -->
-      <div
-        class:list={wide
-          ? 'absolute top-12 right-10 bottom-10 hidden w-[42%] lg:block xl:w-[50%]'
-          : 'min-h-0 flex-1'}
-      >
-        <Devices devices={project.devices} title={project.title} hue={project.hue} />
-      </div>
+      <!-- Широкая карточка. На lg: текст слева, устройства справа, оба поверх обложки.
+           Ниже lg всё идёт друг за другом: чипы, текст, устройства, дата.
+           Остальные карточки: устройства между чипами и датой -->
       {
         wide && project.intro && (
           <div
             class:list={[
-              'absolute inset-x-5 top-[58%] flex max-w-105 -translate-y-1/2 flex-col gap-6',
-              'sm:inset-x-6 md:inset-x-12 md:top-1/2',
+              'flex flex-col gap-3',
+              'lg:absolute lg:inset-x-12 lg:top-1/2 lg:max-w-105 lg:-translate-y-1/2 lg:gap-6',
             ]}
           >
             <p class="text-intro tracking-heading">{project.intro.title}</p>
@@ -46,6 +44,16 @@ const link = project.demo ?? project.href
           </div>
         )
       }
+      <div
+        class:list={wide
+          ? [
+              'h-56 shrink-0 sm:h-72',
+              'lg:absolute lg:top-12 lg:right-10 lg:bottom-10 lg:h-auto lg:w-[42%] xl:w-[50%]',
+            ]
+          : 'min-h-0 flex-1'}
+      >
+        <Devices devices={project.devices} title={project.title} hue={project.hue} />
+      </div>
 
       <div class="mt-auto flex items-end justify-between text-xs text-ink-muted">
         <span>{project.year}</span>

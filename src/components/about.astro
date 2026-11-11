@@ -16,16 +16,20 @@ const { about } = site
           <span>{about.leadBase}</span>
           <span class="text-accent">{about.leadAccent}</span>
         </p>
-        <dl class="flex flex-wrap gap-x-10 gap-y-6 sm:gap-x-16 sm:gap-y-8" data-reveal-group>
+        <ol class="grid gap-8 lg:grid-cols-3 lg:gap-6" data-reveal-group>
           {
-            about.metrics.map((metric) => (
-              <div class="flex flex-col-reverse gap-2" data-reveal>
-                <dd class="text-[13px] text-ink-muted">{metric.caption}</dd>
-                <dt class="text-metric tracking-heading">{metric.value}</dt>
-              </div>
+            about.layers.map((layer, i) => (
+              <li class="flex flex-col gap-4 border-t border-line pt-5" data-reveal>
+                <span class="text-xs tabular-nums text-ink-faint">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 class="text-case font-normal">{layer.title}</h3>
+                <p class="flex-1 text-[15px] leading-relaxed text-ink-muted">{layer.text}</p>
+                <p class="text-xs text-ink-faint">{layer.projects.join(' · ')}</p>
+              </li>
             ))
           }
-        </dl>
+        </ol>
       </div>
     </div>
   </Container>

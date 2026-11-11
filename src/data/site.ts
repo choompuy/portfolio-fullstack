@@ -1,16 +1,4 @@
 import type { NavItem } from '../types'
-import { projects } from './projects'
-
-const plural = (n: number, [one, few, many]: [string, string, string]) => {
-  const m10 = n % 10
-  const m100 = n % 100
-  if (m10 === 1 && m100 !== 11) return one
-  if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few
-  return many
-}
-
-const commercial = projects.filter((p) => p.group === 'commercial').length
-const personal = projects.filter((p) => p.group === 'personal').length
 
 export const site = {
   name: 'Васильев Айхал',
@@ -24,22 +12,24 @@ export const site = {
   },
   about: {
     label: 'Обо мне',
-    leadBase: 'Привет, я Айхал.',
-    leadAccent: ' Проектирую базу и API и делаю интерфейс на React и Next.js.',
-    metrics: [
+    leadBase: 'Не только интерфейс.',
+    leadAccent: ' Вот что я делаю под ним и где это можно посмотреть.',
+    layers: [
       {
-        value: String(commercial),
-        caption: plural(commercial, [
-          'коммерческий проект',
-          'коммерческих проекта',
-          'коммерческих проектов',
-        ]),
+        title: 'Данные',
+        text: 'PostgreSQL в Supabase: схема на 12 таблиц, 24 RLS-политики, роли admin и superadmin. Аналитику для дашбордов считаю SQL-функциями, а не на клиенте.',
+        projects: ['Eda Clone'],
       },
       {
-        value: String(personal),
-        caption: plural(personal, ['личный проект', 'личных проекта', 'личных проектов']),
+        title: 'API',
+        text: 'Серверная логика на Next.js и Express 5: валидация входа на Zod, загрузка изображений, Twitch и YouTube API, живая очередь через SSE.',
+        projects: ['Eda Clone', 'StreamQueue'],
       },
-      { value: '24', caption: 'RLS-политики в схеме на 12 таблиц' },
+      {
+        title: 'Интерфейс',
+        text: 'React и Next.js: дашборды с таблицами и графиками, формы, корзина и чекаут, вход по телефону с OTP. Состояние на Redux Toolkit, адаптив под телефон.',
+        projects: ['Sitim Web', 'Delivery CRM'],
+      },
     ],
   },
   skills: {
